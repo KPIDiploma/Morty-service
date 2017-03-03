@@ -6,3 +6,10 @@ and other variables like as DEBUG=True
 
 from .common import *
 
+
+DATABASES['default'].update({
+    'USER': 'morty',
+    'PASSWORD': 'admin',
+    'HOST': '127.0.0.1',
+    'PORT': '25432',
+})
