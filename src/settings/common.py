@@ -13,7 +13,9 @@ https://docs.djangoproject.com/en/1.10/ref/settings/
 import os
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+BASE_DIR = os.path.dirname(
+    os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+)
 
 
 # Quick-start development settings - unsuitable for production
@@ -39,6 +41,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'rest_framework',
+    'patient',
+    'diagnose',
 ]
 
 MIDDLEWARE = [
@@ -123,8 +127,7 @@ USE_TZ = True
 AUTH_USER_MODEL = 'patient.Patient'
 
 AUTHENTICATION_BACKENDS = [
-    'social.backends.facebook.FacebookOAuth2',
-    'django.contrib.auth.backends.ModelBackend',
+    # 'social.backends.facebook.FacebookOAuth2',
     'django.contrib.auth.backends.ModelBackend',
 ]
 
@@ -148,8 +151,6 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.TokenAuthentication',
         'rest_framework.authentication.BasicAuthentication',
         'rest_framework.authentication.SessionAuthentication',
-        'igostories.pkg.user.authentication.SocialAuthentication',
-        'igostories.pkg.user.authentication.CredentialsAuthentication',
     )
 }
 
