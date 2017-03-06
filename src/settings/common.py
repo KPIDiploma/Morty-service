@@ -12,9 +12,11 @@ https://docs.djangoproject.com/en/1.10/ref/settings/
 
 import os
 
-# Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
+# Build paths inside the project like this: os.path.join(BASE_DIR, ...)
+BASE_DIR = os.path.dirname(
+    os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+)
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.10/howto/deployment/checklist/
@@ -27,7 +29,6 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-
 # Application definition
 
 INSTALLED_APPS = [
@@ -39,6 +40,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'rest_framework',
+    'patient',
+    'diagnose',
 ]
 
 MIDDLEWARE = [
@@ -71,7 +74,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'server.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/1.10/ref/settings/#databases
 
@@ -81,7 +83,6 @@ DATABASES = {
         'NAME': 'morty_db',
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/1.10/ref/settings/#auth-password-validators
@@ -105,7 +106,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/1.10/topics/i18n/
 
@@ -119,12 +119,10 @@ USE_L10N = True
 
 USE_TZ = True
 
-
 AUTH_USER_MODEL = 'patient.Patient'
 
 AUTHENTICATION_BACKENDS = [
-    'social.backends.facebook.FacebookOAuth2',
-    'django.contrib.auth.backends.ModelBackend',
+    # 'social.backends.facebook.FacebookOAuth2',
     'django.contrib.auth.backends.ModelBackend',
 ]
 
@@ -148,12 +146,10 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.TokenAuthentication',
         'rest_framework.authentication.BasicAuthentication',
         'rest_framework.authentication.SessionAuthentication',
-        'igostories.pkg.user.authentication.SocialAuthentication',
-        'igostories.pkg.user.authentication.CredentialsAuthentication',
     )
 }
 
-#logging
+# logging
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
