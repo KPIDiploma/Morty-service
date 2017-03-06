@@ -36,6 +36,7 @@ class PatientManager(BaseUserManager):
         extra_fields.setdefault('is_superuser', True)
         return self._create_user(email, password, **extra_fields)
 
+
 class Patient(AbstractUser):
     first_name = models.CharField(
         verbose_name=_('First name'),
