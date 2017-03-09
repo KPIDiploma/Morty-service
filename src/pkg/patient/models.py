@@ -41,20 +41,12 @@ class Patient(AbstractUser):
     first_name = models.CharField(
         verbose_name=_('First name'),
         max_length=30,
-        blank=True,
     )
     last_name = models.CharField(
         verbose_name=_('Last name'),
         max_length=30,
-        blank=True,
     )
-    # username = models.CharField(
-    #     verbose_name=_('username'),
-    #     max_length=150,
-    #     help_text=_('Required. 150 charactes or fewer. Letters, digits.'),
-    #     validators=[UnicodeUsernameValidator()],
-    # )
-    birth_day = models.DateTimeField(
+    birth_day = models.DateField(
         verbose_name=_('date of the birth'),
         null=True,
         blank=True,
