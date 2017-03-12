@@ -46,7 +46,7 @@ class Patient(AbstractUser):
         verbose_name=_('Last name'),
         max_length=30,
     )
-    birth_day = models.DateField(
+    birthday = models.DateField(
         verbose_name=_('date of the birth'),
         null=True,
         blank=True,
