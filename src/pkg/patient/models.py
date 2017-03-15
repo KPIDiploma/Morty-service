@@ -6,7 +6,7 @@ from django.utils.translation import ugettext as _
 
 
 class PatientManager(BaseUserManager):
-    def _create_user(self, email, password,first_name, last_name, **extra_fields):
+    def _create_user(self, email, password, first_name, last_name, **extra_fields):
         """
         Create and save a User with the given email and password.
         :param email:
@@ -31,12 +31,12 @@ class PatientManager(BaseUserManager):
     def create_user(self, email, password=None, first_name=None, last_name=None, **extra_fields):
         extra_fields.setdefault('is_staff', False)
         extra_fields.setdefault('is_superuser', False)
-        return self._create_user(email, password,first_name, last_name, **extra_fields)
+        return self._create_user(email, password, first_name, last_name, **extra_fields)
 
-    def create_superuser(self, email, password=None,first_name=None, last_name=None, **extra_fields):
+    def create_superuser(self, email, password=None, first_name=None, last_name=None, **extra_fields):
         extra_fields.setdefault('is_staff', True)
         extra_fields.setdefault('is_superuser', True)
-        return self._create_user(email, first_name, last_name,password, **extra_fields)
+        return self._create_user(email, first_name, last_name, password, **extra_fields)
 
 
 class Patient(AbstractUser):
@@ -57,6 +57,12 @@ class Patient(AbstractUser):
         verbose_name=_('E-mail'),
         max_length=255,
         unique=True,
+    )
+    username = models.CharField(
+        verbose_name=_('username'),
+        max_length=100,
+        null=True,
+        blank=True,
     )
 
     USERNAME_FIELD = 'email'

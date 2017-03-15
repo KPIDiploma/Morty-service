@@ -4,7 +4,7 @@ from rest_framework import permissions
 class IsCurrentUserOrAdminOnly(permissions.IsAdminUser):
 
     def has_permission(self, request, view):
-        is_admin = super().has_permission(request, view)
+        is_admin = super(IsCurrentUserOrAdminOnly, self).has_permission(request, view)
 
         if request.method == 'POST':
             return is_admin

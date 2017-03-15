@@ -11,7 +11,7 @@ from pkg.common.permissions import IsCurrentUserOrAdminOnly
 
 class PatientViewSet(viewsets.ModelViewSet):
     permission_classes = (IsCurrentUserOrAdminOnly,)
-    queryset = Patient.objects.all()
+    queryset = Patient.objects
     serializer_class = PatientSerializer
 
 
