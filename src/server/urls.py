@@ -19,10 +19,13 @@ from django.conf.urls.static import static
 from django.conf import settings
 from django.contrib import admin
 
+from pkg.patient.views import RegistrationView
+
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'api/v1/', include('pkg.patient.urls')),
     url(r'api/v1/', include('pkg.diagnose.urls')),
+    url(r'^api/v1/register/', RegistrationView.as_view()),
 ]
 
 if settings.DEBUG:

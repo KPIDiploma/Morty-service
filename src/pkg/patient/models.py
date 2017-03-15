@@ -6,7 +6,7 @@ from django.utils.translation import ugettext as _
 
 
 class PatientManager(BaseUserManager):
-    def _create_user(self, email, password, **extra_fields):
+    def _create_user(self, email, password,first_name, last_name, **extra_fields):
         """
         Create and save a User with the given email and password.
         :param email:
@@ -20,21 +20,23 @@ class PatientManager(BaseUserManager):
         email = self.normalize_email(email)
         user = self.model(
             email=email,
+            first_name=first_name,
+            last_name=last_name,
             **extra_fields
         )
         user.set_password(password)
         user.save(using=self._db)
         return user
 
-    def create_user(self, email, password=None, **extra_fields):
+    def create_user(self, email, password=None, first_name=None, last_name=None, **extra_fields):
         extra_fields.setdefault('is_staff', False)
         extra_fields.setdefault('is_superuser', False)
-        return self._create_user(email, password, **extra_fields)
+        return self._create_user(email, password,first_name, last_name, **extra_fields)
 
-    def create_superuser(self, email, password=None, **extra_fields):
+    def create_superuser(self, email, password=None,first_name=None, last_name=None, **extra_fields):
         extra_fields.setdefault('is_staff', True)
         extra_fields.setdefault('is_superuser', True)
-        return self._create_user(email, password, **extra_fields)
+        return self._create_user(email, first_name, last_name,password, **extra_fields)
 
 
 class Patient(AbstractUser):
