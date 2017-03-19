@@ -20,7 +20,8 @@ class PatientSerializer(serializers.ModelSerializer):
 class PatientRegisterSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ('id', 'email', 'password', 'password_confirm', 'first_name', 'last_name')
+        fields = ('id', 'email', 'password', 'password_confirm', 'first_name',
+                  'last_name')
 
     password = serializers.CharField(write_only=True)
     password_confirm = serializers.CharField(write_only=True)

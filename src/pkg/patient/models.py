@@ -61,7 +61,6 @@ class Patient(AbstractUser):
     username = models.CharField(
         verbose_name=_('username'),
         max_length=100,
-        null=True,
         blank=True,
     )
 

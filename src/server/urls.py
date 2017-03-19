@@ -20,11 +20,17 @@ from django.conf import settings
 from django.contrib import admin
 
 from pkg.patient.views import RegistrationView
+from pkg.patient.views import profile
+from pkg.patient.views import index
+from pkg.patient.views import login_view
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'api/v1/', include('pkg.patient.urls')),
-    url(r'api/v1/', include('pkg.diagnose.urls')),
+    url(r'api/', include('pkg.patient.urls', namespace='api')),
+    url(r'api/', include('pkg.diagnose.urls', namespace='api')),
+    url(r'profile', profile, name='profile'),
+    url(r'^$', index, name='index'),
+    url(r'^login/$', login_view, name='login'),
     url(r'^api/v1/register/', RegistrationView.as_view()),
 ]
 
