@@ -1,5 +1,5 @@
 from .models import Diagnose
-from .models import DiagnoseFiles
+from .models import DiagnoseFile
 from django.contrib import admin
 
 
@@ -10,5 +10,6 @@ class DiagnoseFilesInline(admin.ModelAdmin):
 class DiagnoseAdmin(admin.ModelAdmin):
     pass
 
-admin.site.register(DiagnoseFiles, DiagnoseFilesInline)
+
+admin.site.register(DiagnoseFile, DiagnoseFilesInline)
 admin.site.register(Diagnose, DiagnoseAdmin)
