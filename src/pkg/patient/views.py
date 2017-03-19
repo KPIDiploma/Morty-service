@@ -1,15 +1,18 @@
 from rest_framework import viewsets
 from rest_framework import generics
 from rest_framework import permissions
+from rest_framework.response import Response
 
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 from django.shortcuts import redirect
+from django.shortcuts import get_object_or_404
 from django.contrib.auth import authenticate
 from django.contrib.auth import login
 
 from pkg.patient.models import Patient
 from pkg.patient.serializers import PatientSerializer
+from pkg.patient.serializers import FullPatientSerializer
 from pkg.patient.serializers import PatientRegisterSerializer
 from pkg.common.permissions import IsCurrentUserOrAdminOnly
 
@@ -25,8 +28,7 @@ def login_view(request):
     if user is not None:
         login(request, user)
         # Redirect to a success page.
-        # return render(request, 'patient/profile.html')
-        return redirect('profile', request)
+        return redirect('/profile', request)
     else:
         return redirect('/', request)
 
@@ -36,20 +38,36 @@ def profile(request):
     return render(request, 'patient/profile.html')
 
 
-# @login_required(redirect_field_name=)
-# @permission_classes((IsCurrentUserOrAdminOnly,))
-# def current(request):
-#     """
-#     Returns actual order of the current user
-#     """
-#     serializer = PatientSerializer(request.user)
-#     return Response(serializer.data)
-
-
 class PatientViewSet(viewsets.ModelViewSet):
     permission_classes = (permissions.IsAdminUser,)
     queryset = Patient.objects.all()
-    serializer_class = PatientSerializer
+    serializer_class = FullPatientSerializer
+
+    def list(self, request, *args, **kwargs):
+        queryset = Patient.objects.all()
+        serializer = PatientSerializer(queryset, many=True)
+        return Response(serializer.data)
+
+    def retrieve(self, request, pk=None, *args, **kwargs):
+        queryset = Patient.objects.all()
+        patient = get_object_or_404(queryset, pk=pk)
+        serializer = FullPatientSerializer(patient)
+        return Response(serializer.data)
+
+    def partial_update(self, request, pk=None, *args, **kwargs):
+        queryset = Patient.objects.all()
+        patient = get_object_or_404(queryset, pk=pk)
+        serializer = FullPatientSerializer(patient)
+        return Response(serializer.data)
+
+    def perform_update(self, serializer):
+        # queryset = Patient.objects.all()
+        # patient = get_object_or_404(queryset, pk=pk)
+        # if request.data
+        # patient.save()
+        # serializer = FullPatientSerializer(patient)
+        serializer.save()
+        return Response(serializer.data)
 
 
 class RegistrationView(generics.CreateAPIView):

@@ -7,6 +7,7 @@ from rest_framework import serializers
 
 from pkg.patient.models import Patient
 from pkg.patient.services import PatientService
+from pkg.diagnose.serializers import DiagnoseSerializer
 
 User = get_user_model()
 
@@ -14,7 +15,17 @@ User = get_user_model()
 class PatientSerializer(serializers.ModelSerializer):
     class Meta:
         model = Patient
-        fields = ('id', 'first_name', 'last_name', 'birthday', 'email')
+        fields = ('id', 'first_name', 'last_name', 'email')
+
+
+class FullPatientSerializer(serializers.ModelSerializer):
+    diagnoses = DiagnoseSerializer(many=True)
+
+    class Meta:
+        model = Patient
+        fields = (
+            'id', 'first_name', 'last_name', 'birthday', 'email', 'diagnoses'
+        )
 
 
 class PatientRegisterSerializer(serializers.ModelSerializer):

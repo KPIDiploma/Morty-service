@@ -10,16 +10,6 @@ from pkg.diagnose.serializers import DiagnoseFileSerializer
 from pkg.common.permissions import IsCurrentUserOrAdminOnly
 
 
-@api_view(['GET', ])
-@permission_classes((IsCurrentUserOrAdminOnly,))
-def current(request):
-    """
-    Returns actual order of the current user
-    """
-    serializer = DiagnoseSerializer(request.user)
-    return Response(serializer.data)
-
-
 class DiagnoseViewSet(viewsets.ModelViewSet):
     queryset = Diagnose.objects.all()
     serializer_class = DiagnoseSerializer

@@ -25,12 +25,13 @@ from pkg.patient.views import index
 from pkg.patient.views import login_view
 
 urlpatterns = [
+    url(r'^$', index, name='index'),
+    url(r'^login/$', login_view, name='login'),
+    url(r'profile', profile, name='profile'),
+
     url(r'^admin/', admin.site.urls),
     url(r'api/', include('pkg.patient.urls', namespace='api')),
     url(r'api/', include('pkg.diagnose.urls', namespace='api')),
-    url(r'profile', profile, name='profile'),
-    url(r'^$', index, name='index'),
-    url(r'^login/$', login_view, name='login'),
     url(r'^api/v1/register/', RegistrationView.as_view()),
 ]
 
