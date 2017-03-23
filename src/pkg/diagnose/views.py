@@ -1,12 +1,9 @@
 from rest_framework import viewsets
-from rest_framework.decorators import api_view
-from rest_framework.decorators import permission_classes
-from rest_framework.response import Response
 
 from pkg.diagnose.models import Diagnose
 from pkg.diagnose.models import DiagnoseFile
 from pkg.diagnose.serializers import DiagnoseSerializer
-from pkg.diagnose.serializers import DiagnoseFileSerializer
+from pkg.diagnose.serializers import FileSerializer
 from pkg.common.permissions import IsCurrentUserOrAdminOnly
 
 
@@ -18,5 +15,5 @@ class DiagnoseViewSet(viewsets.ModelViewSet):
 
 class DiagnoseFileViewSet(viewsets.ModelViewSet):
     queryset = DiagnoseFile.objects.all()
-    serializer_class = DiagnoseFileSerializer
+    serializer_class = FileSerializer
     permission_classes = (IsCurrentUserOrAdminOnly,)

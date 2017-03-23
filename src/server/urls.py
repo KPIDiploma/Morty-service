@@ -23,11 +23,13 @@ from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from pkg.patient.views import RegistrationView
 from pkg.patient.views import profile
 from pkg.patient.views import index
-from pkg.patient.views import login_view
+from pkg.patient.views import LoginView
+from pkg.patient.views import logout_view
 
 urlpatterns = [
     url(r'^$', index, name='index'),
-    url(r'^login/$', login_view, name='login'),
+    url(r'^api/v1/auth/login/$', LoginView.as_view(), name='login'),
+    url(r'^logout/$', logout_view, name='logout'),
     url(r'profile', profile, name='profile'),
 
     url(r'^admin/', admin.site.urls),

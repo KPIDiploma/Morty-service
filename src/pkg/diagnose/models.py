@@ -1,9 +1,13 @@
 from django.db import models
 
+from pkg.patient.models import Patient
+
 
 # Create your models here.
 class Diagnose(models.Model):
     text = models.TextField()
+    diagnose = models.ForeignKey(Patient, related_name='diagnoses',
+                                 on_delete=models.CASCADE)
 
     def __str__(self):
         return str(self.pk)
