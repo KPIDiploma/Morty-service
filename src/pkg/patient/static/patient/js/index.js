@@ -22,26 +22,20 @@ angular.module('indexApp', ['ngRoute'])
     )
 
 
-    .controller('indexController', function ($scope, $location, $http) {
+    .controller('indexController', function ($scope, $location, $http, $window) {
         $scope.email = 'test@test.com';
         $scope.password = 'password';
 
         $scope.updateValue = function () {
-            var post_data = {
-                email: $scope.email,
-                password: $scope.password
-            };
-            $http({
-                method: 'POST',
-                url: 'api/v1/auth/login/',
-                data: post_data,
-                headers: {'Content-Type': 'application/x-www-form-urlencoded'}
-            }).success(function (data, status, headers, config) {
-                // $scope.session.setUser(data.user);
-                //
-                // session.setAccessToken(data.accessToken);
-            }).error(function (data, status, header, config) {
-                $scope.login = 'ERROR';
+            $http
+                .post('api/v1/auth/login', $scope.user)
+                .success(function (data, status, headers, config) {
+                    $window.sessionStorage.token = data.token;
+                    $window.location = 'api/v1/profile';
+                    $scope.login = 'Welcome';
+                }).error(function (data, status, header, config) {
+                    delete $window.sessionStorage.token;
+                    $scope.login = 'ERROR';
             });
         };
 

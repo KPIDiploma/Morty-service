@@ -11,8 +11,9 @@
 <div class="login-page">
     <div class="form">
         <form class="login-form" ng-submit="updateValue()">
-            <input type="text" placeholder="email" ng-model="email"/>
-            <input type="password" placeholder="password" ng-model="password"/>
+            <input type="text" placeholder="email" ng-model="user.email"/>
+            <input type="password" placeholder="password"
+                   ng-model="user.password"/>
             <button>login</button>
             <p>[[login]]</p>
         </form>

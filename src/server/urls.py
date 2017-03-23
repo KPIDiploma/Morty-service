@@ -18,19 +18,18 @@ from django.conf.urls import include
 from django.conf.urls.static import static
 from django.conf import settings
 from django.contrib import admin
-from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 
 from pkg.patient.views import RegistrationView
 from pkg.patient.views import profile
 from pkg.patient.views import index
 from pkg.patient.views import LoginView
-from pkg.patient.views import logout_view
+from pkg.patient.views import LogoutView
 
 urlpatterns = [
     url(r'^$', index, name='index'),
-    url(r'^api/v1/auth/login/$', LoginView.as_view(), name='login'),
-    url(r'^logout/$', logout_view, name='logout'),
-    url(r'profile', profile, name='profile'),
+    url(r'^api/v1/auth/login$', LoginView.as_view(), name='login'),
+    url(r'^api/v1/auth/logout$', LogoutView.as_view(), name='logout'),
+    url(r'api/v1/profile', profile, name='profile'),
 
     url(r'^admin/', admin.site.urls),
     url(r'api/', include('pkg.patient.urls', namespace='api')),
@@ -41,4 +40,3 @@ urlpatterns = [
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL,
                           document_root=settings.MEDIA_ROOT)
-    # urlpatterns += staticfiles_urlpatterns()

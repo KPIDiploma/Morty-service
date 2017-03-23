@@ -3,6 +3,7 @@ import json
 from rest_framework import viewsets
 from rest_framework import status
 from rest_framework import views
+from rest_framework import serializers
 from rest_framework import generics
 from rest_framework import permissions
 from rest_framework.response import Response
@@ -23,19 +24,29 @@ from pkg.common.permissions import IsCurrentUserOrAdminOnly
 
 
 def index(request):
+    if request.user.is_authenticated:
+        return redirect('/api/v1/profile', request)
     return render(request, 'patient/index.html')
 
 
-def logout_view(request):
-    logout(request)
+class LogoutView(generics.GenericAPIView):
+    """
+    Use this endpoint to logout user (remove user authentication token).
+    """
+    permission_classes = (
+        permissions.IsAuthenticated,
+    )
+    serializer_class = serializers.Serializer
+
+    def post(self, request, *args, **kwargs):
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
 
 class LoginView(views.APIView):
     def post(self, request, format=None):
-        data = json.loads(request.body)
 
-        email = data.get('email', None)
-        password = data.get('password', None)
+        email = request.data.get('email', None)
+        password = request.data.get('password', None)
 
         account = authenticate(email=email, password=password)
 
@@ -58,23 +69,6 @@ class LoginView(views.APIView):
             }, status=status.HTTP_401_UNAUTHORIZED)
 
 
-def login_view(request):
-    try:
-        body = json.loads(request.body)
-        email = body.get('email', None)
-        password = body.get('password', None)
-        user = authenticate(email=email, password=password)
-        if user is not None:
-            # login(request, user)
-            # Redirect to a success page.
-            return redirect('/profile', request)
-            # return HttpResponse(status=200)
-        else:
-            return HttpResponse(status=401)
-    except Exception:
-        return HttpResponse(status=404)
-
-
 @login_required(login_url='/login')
 def profile(request):
     return render(request, 'patient/profile.html')
@@ -90,26 +84,14 @@ class PatientViewSet(viewsets.ModelViewSet):
         serializer = PatientSerializer(queryset, many=True)
         return Response(serializer.data)
 
-    # def retrieve(self, request, pk=None, *args, **kwargs):
-    #     queryset = Patient.objects.all()
-    #     patient = get_object_or_404(queryset, pk=pk)
-    #     serializer = FullPatientSerializer(patient)
+    # def perform_update(self, serializer):
+    #     # queryset = Patient.objects.all()
+    #     # patient = get_object_or_404(queryset, pk=pk)
+    #     # if request.data
+    #     # patient.save()
+    #     # serializer = FullPatientSerializer(patient)
+    #     serializer.save()
     #     return Response(serializer.data)
-    #
-    # def partial_update(self, request, pk=None, *args, **kwargs):
-    #     queryset = Patient.objects.all()
-    #     patient = get_object_or_404(queryset, pk=pk)
-    #     serializer = FullPatientSerializer(patient)
-    #     return Response(serializer.data)
-
-    def perform_update(self, serializer):
-        # queryset = Patient.objects.all()
-        # patient = get_object_or_404(queryset, pk=pk)
-        # if request.data
-        # patient.save()
-        # serializer = FullPatientSerializer(patient)
-        serializer.save()
-        return Response(serializer.data)
 
 
 class RegistrationView(generics.CreateAPIView):
