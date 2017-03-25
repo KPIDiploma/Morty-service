@@ -15,28 +15,30 @@
 <div class="row">
   <div class="col-md-2">
     <ul class="nav nav-pills nav-stacked">
-      <li role="presentation" class="[[profile_active]]">
-        <a href="#" ng-click="profile_page()">Profile</a>
+      <li role="presentation" class="[[profileActive]]">
+        <a href="#" ng-click="profilePage()">Profile</a>
       </li>
-      <li role="presentation" class="[[diagnoses_active]]">
-        <a href="#" ng-click="diagnoses_page()">Diagnoses</a>
+      <li role="presentation" class="[[diagnosesActive]]">
+        <a href="#" ng-click="diagnosesPage()">Diagnoses</a>
       </li>
       <li role="presentation" class="">
         <a href="#" ng-click="logout()">Logout</a>
       </li>
     </ul>
   </div>
-  <div class="col-md-8">
+  <div class="col-md-10">
 
     <!--********* -->
     <!-- PROFILE  -->
     <!--********* -->
-    <div class="profile-info">
+    <div class="profile-info" ng-show="profileActive">
       <div class="form">
-        <p>Email : [[profile.email]]</p>
-        <p>Name : [[profile.first_name]]</p>
-        <p>Surname : [[profile.last_name]]</p>
+        <p>Email : <input ng-model="profile.email" type="text"/></p>
+        <p>Name : <input ng-model="profile.first_name" type="text"/></p>
+        <p>Surname : <input ng-model="profile.last_name" type="text"/></p>
+
         <div class="dropdown">
+          Blood Type :
           <button class="btn btn-default dropdown-toggle" type="button"
                   id="dropdownMenu1" data-toggle="dropdown"
                   aria-haspopup="true"
@@ -54,17 +56,55 @@
             <li><a href="#">AB+</a></li>
             <li><a href="#">AB+</a></li>
           </ul>
+          <!--</p>-->
         </div>
+
       </div>
     </div>
 
-    <!--********* -->
-    <!--DIAGNOSES -->
-    <!--********* -->
-    <div class="profile-diagnoses">
-      <!--<div class="form">-->
+    <!--***************** -->
+    <!-- DIAGNOSES TABLE  -->
+    <!--***************** -->
+    <div class="profile-diagnoses" ng-show="diagnosesActive">
+      <table class="table">
+        <thead>
+        <tr>
+          <th>#</th>
+          <th>Date</th>
+          <th>Title</th>
 
-      <!--</div>-->
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="row in diagnoses" ng-click="diagnoseRow(row.id)">
+          <td>[[row.id]]</td>
+          <td>20-03-2017</td>
+          <td>[[row.text]]</td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+    <!--*************** -->
+    <!-- DIAGNOSES ROW  -->
+    <!--*************** -->
+    <div class="profile-diagnose" ng-show="diagnoseRowShow">
+      <p>Text : [[diagnose.text]]</p>
+
+      <table class="table">
+        <thead>
+        <tr>
+          <th>#</th>
+          <th>File</th>
+
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="row in diagnose.files">
+          <td>[[row.id]]</td>
+          <td>[[row.file]]</td>
+        </tr>
+        </tbody>
+      </table>
     </div>
   </div>
 </div>

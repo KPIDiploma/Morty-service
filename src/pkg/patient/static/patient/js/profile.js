@@ -13,6 +13,7 @@ angular.module('profileApp', ['ngRoute'])
 
 
     .controller('profileController', function ($scope, $location, $http, $window) {
+        $scope.profileActive = 'active';
         $scope.profile = {
             "id": 6,
             "first_name": "Test",
@@ -46,13 +47,30 @@ angular.module('profileApp', ['ngRoute'])
                 ]
             }
         ];
-        $scope.profile_page = function () {
-            $scope.profile_active = 'active';
-            $scope.diagnoses_active = ''
+        $scope.profilePage = function () {
+            $scope.profileActive = 'active';
+            $scope.diagnosesActive = '';
+            $scope.diagnoseRowShow = false
         };
-        $scope.diagnoses_page = function () {
-            $scope.profile_active = '';
-            $scope.diagnoses_active = 'active'
+        $scope.diagnosesPage = function () {
+            $scope.profileActive = '';
+            $scope.diagnoseRowShow = false;
+            $scope.diagnosesActive = 'active'
+        };
+        $scope.diagnoseRow = function (id) {
+            $scope.profileActive = '';
+            $scope.diagnosesActive = '';
+            $scope.diagnoseRowShow = true;
+            $http.get('api/v1/diagnose/'+id)
+                .success(function (data, status, headers, config) {
+                    $scope.diagnose = data
+                }
+            )
+
+        };
+        $scope.goToLink = function (id) {
+            $scope.profile.first_name = "LOL " + id;
+            $window.location = 'api/v1/diagnose/' + id;
         };
         $scope.logout = function () {
             $http

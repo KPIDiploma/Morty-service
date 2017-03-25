@@ -13,8 +13,6 @@ angular.module('indexApp', ['ngRoute'])
 
 
     .controller('indexController', function ($scope, $location, $http, $window) {
-        $scope.email = 'test@test.com';
-        $scope.password = 'password';
 
         $scope.login = function () {
             $http
