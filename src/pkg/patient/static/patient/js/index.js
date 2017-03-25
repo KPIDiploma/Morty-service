@@ -2,16 +2,6 @@
  * Created by Kryvonis on 3/23/17.
  */
 angular.module('indexApp', ['ngRoute'])
-
-
-
-// .factory('Authentication', function ($cookies, $http) {
-//     function login() {
-//         return
-//     }
-// })
-
-
     .config(
         ['$interpolateProvider', '$httpProvider', function ($interpolateProvider, $httpProvider) {
             $interpolateProvider.startSymbol('[[');
@@ -26,18 +16,18 @@ angular.module('indexApp', ['ngRoute'])
         $scope.email = 'test@test.com';
         $scope.password = 'password';
 
-        $scope.updateValue = function () {
+        $scope.login = function () {
             $http
                 .post('api/v1/auth/login', $scope.user)
                 .success(function (data, status, headers, config) {
                     $window.sessionStorage.token = data.token;
-                    $window.location = 'api/v1/profile';
-                    $scope.login = 'Welcome';
+                    $window.location = '/profile';
                 }).error(function (data, status, header, config) {
                     delete $window.sessionStorage.token;
-                    $scope.login = 'ERROR';
+                    $scope.result = 'email or password not correct';
             });
         };
+
 
 
     });

@@ -11,16 +11,13 @@ from rest_framework.response import Response
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 from django.shortcuts import redirect
-from django.shortcuts import get_object_or_404
 from django.contrib.auth import authenticate
 from django.contrib.auth import login, logout
-from django.http import HttpResponse
 
 from pkg.patient.models import Patient
 from pkg.patient.serializers import PatientSerializer
 from pkg.patient.serializers import FullPatientSerializer
 from pkg.patient.serializers import PatientRegisterSerializer
-from pkg.common.permissions import IsCurrentUserOrAdminOnly
 
 
 def index(request):
@@ -39,6 +36,7 @@ class LogoutView(generics.GenericAPIView):
     serializer_class = serializers.Serializer
 
     def post(self, request, *args, **kwargs):
+        logout(request)
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
@@ -83,15 +81,6 @@ class PatientViewSet(viewsets.ModelViewSet):
         queryset = Patient.objects.all()
         serializer = PatientSerializer(queryset, many=True)
         return Response(serializer.data)
-
-    # def perform_update(self, serializer):
-    #     # queryset = Patient.objects.all()
-    #     # patient = get_object_or_404(queryset, pk=pk)
-    #     # if request.data
-    #     # patient.save()
-    #     # serializer = FullPatientSerializer(patient)
-    #     serializer.save()
-    #     return Response(serializer.data)
 
 
 class RegistrationView(generics.CreateAPIView):

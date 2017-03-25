@@ -1,10 +1,80 @@
 <!DOCTYPE html>
-<html lang="en">
+{% load i18n static %}
+<html lang="en" ng-app="profileApp">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <link rel="stylesheet" type="text/css"
+        href='{% static "patient/css/profile.css" %}'>
+  <link rel="stylesheet" type="text/css"
+        href='{% static "patient/css/diagnoses.css" %}'>
+  <link rel="stylesheet"
+        href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 </head>
-<body>
-After login
+<body ng-controller="profileController">
+<div class="row">
+  <div class="col-md-2">
+    <ul class="nav nav-pills nav-stacked">
+      <li role="presentation" class="[[profile_active]]">
+        <a href="#" ng-click="profile_page()">Profile</a>
+      </li>
+      <li role="presentation" class="[[diagnoses_active]]">
+        <a href="#" ng-click="diagnoses_page()">Diagnoses</a>
+      </li>
+      <li role="presentation" class="">
+        <a href="#" ng-click="logout()">Logout</a>
+      </li>
+    </ul>
+  </div>
+  <div class="col-md-8">
+
+    <!--********* -->
+    <!-- PROFILE  -->
+    <!--********* -->
+    <div class="profile-info">
+      <div class="form">
+        <p>Email : [[profile.email]]</p>
+        <p>Name : [[profile.first_name]]</p>
+        <p>Surname : [[profile.last_name]]</p>
+        <div class="dropdown">
+          <button class="btn btn-default dropdown-toggle" type="button"
+                  id="dropdownMenu1" data-toggle="dropdown"
+                  aria-haspopup="true"
+                  aria-expanded="true">
+            [[profile.blood_type]]
+            <span class="caret"></span>
+          </button>
+          <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+            <li><a href="#">0+</a></li>
+            <li><a href="#">0-</a></li>
+            <li><a href="#">A+</a></li>
+            <li><a href="#">A-</a></li>
+            <li><a href="#">B+</a></li>
+            <li><a href="#">B-</a></li>
+            <li><a href="#">AB+</a></li>
+            <li><a href="#">AB+</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!--********* -->
+    <!--DIAGNOSES -->
+    <!--********* -->
+    <div class="profile-diagnoses">
+      <!--<div class="form">-->
+
+      <!--</div>-->
+    </div>
+  </div>
+</div>
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.0rc1/angular-route.min.js"></script>
+<script src='{% static "patient/js/profile.js"%}'></script>
 </body>
 </html>

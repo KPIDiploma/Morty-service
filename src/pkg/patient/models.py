@@ -4,9 +4,12 @@ from django.contrib.auth.base_user import BaseUserManager
 # from django.contrib.auth.validators import UnicodeUsernameValidator
 from django.utils.translation import ugettext as _
 
+from pkg.patient.choices import BloodTypeEnum
+
 
 class PatientManager(BaseUserManager):
-    def _create_user(self, email, password, first_name, last_name, **extra_fields):
+    def _create_user(self, email, password, first_name, last_name,
+                     **extra_fields):
         """
         Create and save a User with the given email and password.
         :param email:
@@ -28,15 +31,19 @@ class PatientManager(BaseUserManager):
         user.save(using=self._db)
         return user
 
-    def create_user(self, email, password=None, first_name=None, last_name=None, **extra_fields):
+    def create_user(self, email, password=None, first_name=None,
+                    last_name=None, **extra_fields):
         extra_fields.setdefault('is_staff', False)
         extra_fields.setdefault('is_superuser', False)
-        return self._create_user(email, password, first_name, last_name, **extra_fields)
+        return self._create_user(email, password, first_name, last_name,
+                                 **extra_fields)
 
-    def create_superuser(self, email, password=None, first_name=None, last_name=None, **extra_fields):
+    def create_superuser(self, email, password=None, first_name=None,
+                         last_name=None, **extra_fields):
         extra_fields.setdefault('is_staff', True)
         extra_fields.setdefault('is_superuser', True)
-        return self._create_user(email, first_name, last_name, password, **extra_fields)
+        return self._create_user(email, first_name, last_name, password,
+                                 **extra_fields)
 
 
 class Patient(AbstractUser):
@@ -63,7 +70,10 @@ class Patient(AbstractUser):
         max_length=100,
         blank=True,
     )
-
+    blood_type = models.CharField(
+        choices=BloodTypeEnum.choices(),
+        max_length=3
+    )
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['first_name', 'last_name']
 
