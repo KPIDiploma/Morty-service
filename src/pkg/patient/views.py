@@ -17,12 +17,13 @@ from django.contrib.auth import login, logout
 from pkg.patient.models import Patient
 from pkg.patient.serializers import PatientSerializer
 from pkg.patient.serializers import FullPatientSerializer
+from pkg.patient.serializers import PatientDiagnosesSerializer
 from pkg.patient.serializers import PatientRegisterSerializer
 
 
 def index(request):
     if request.user.is_authenticated:
-        return redirect('/api/v1/profile', request)
+        return redirect('/profile', request)
     return render(request, 'patient/index.html')
 
 
@@ -52,9 +53,7 @@ class LoginView(views.APIView):
             if account.is_active:
                 login(request, account)
 
-                serialized = PatientSerializer(account)
-
-                return Response(serialized.data)
+                return Response(status=status.HTTP_200_OK)
             else:
                 return Response({
                     'status': 'Unauthorized',
@@ -70,6 +69,33 @@ class LoginView(views.APIView):
 @login_required(login_url='/login')
 def profile(request):
     return render(request, 'patient/profile.html')
+
+
+class CurrentUserView(views.APIView):
+    permission_classes = (permissions.IsAuthenticated,)
+
+    def get(self, request):
+        patient = Patient.objects.get(pk=request.user.id)
+        serializer = FullPatientSerializer(patient)
+        return Response(serializer.data)
+
+
+class CurrentUserDiagnosesView(views.APIView):
+    permission_classes = (permissions.IsAuthenticated,)
+
+    def get(self, request):
+        patient = Patient.objects.get(pk=request.user.id)
+        serializer = PatientDiagnosesSerializer(patient)
+        return Response(serializer.data)
+
+
+class CurrentUserFilesView(views.APIView):
+    permission_classes = (permissions.IsAuthenticated,)
+
+    def get(self, request):
+        patient = Patient.objects.get(pk=request.user.id)
+        serializer = PatientDiagnosesSerializer(patient)
+        return Response(serializer.data)
 
 
 class PatientViewSet(viewsets.ModelViewSet):

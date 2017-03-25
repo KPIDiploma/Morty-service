@@ -24,16 +24,22 @@ from pkg.patient.views import profile
 from pkg.patient.views import index
 from pkg.patient.views import LoginView
 from pkg.patient.views import LogoutView
+from pkg.patient.views import CurrentUserView
+from pkg.patient.views import CurrentUserDiagnosesView
+from pkg.patient.views import CurrentUserFilesView
 
 urlpatterns = [
     url(r'^$', index, name='index'),
     url(r'^api/v1/auth/login$', LoginView.as_view(), name='login'),
     url(r'^api/v1/auth/logout$', LogoutView.as_view(), name='logout'),
-    url(r'profile$', profile, name='profile'),
+    url(r'^api/v1/current-user$', CurrentUserView.as_view(), name='current'),
+    url(r'^api/v1/current-diagnoses$', CurrentUserDiagnosesView.as_view(), name='current'),
+    url(r'^api/v1/current-files/(?P<pk>[0-9]+)$', CurrentUserFilesView.as_view(), name='current'),
+    url(r'^profile$', profile, name='profile'),
 
     url(r'^admin/', admin.site.urls),
-    url(r'api/', include('pkg.patient.urls', namespace='api')),
-    url(r'api/', include('pkg.diagnose.urls', namespace='api')),
+    url(r'^api/', include('pkg.patient.urls', namespace='api')),
+    url(r'^api/', include('pkg.diagnose.urls', namespace='api')),
     url(r'^api/v1/register/', RegistrationView.as_view()),
 ]
 

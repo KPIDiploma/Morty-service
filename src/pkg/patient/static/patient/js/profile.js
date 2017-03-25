@@ -13,65 +13,50 @@ angular.module('profileApp', ['ngRoute'])
 
 
     .controller('profileController', function ($scope, $location, $http, $window) {
-        $scope.profileActive = 'active';
-        $scope.profile = {
-            "id": 6,
-            "first_name": "Test",
-            "last_name": "Testovich",
-            "email": "test@test.com",
-            "blood_type": "0+"
-        };
-        $scope.diagnoses = [
-            {
-                "id": 1,
-                "text": "Basic text",
-                "files": [
-                    {
-                        "id": 1,
-                        "file": "http://127.0.0.1:8000/media/ticket_38061888.pdf"
-                    },
-                    {
-                        "id": 2,
-                        "file": "http://127.0.0.1:8000/media/v-Fpnb4wvAY.jpg"
-                    }
-                ]
-            },
-            {
-                "id": 2,
-                "text": "test2",
-                "files": [
-                    {
-                        "id": 3,
-                        "file": "http://127.0.0.1:8000/media/wallhaven-442687.jpg"
-                    }
-                ]
-            }
-        ];
         $scope.profilePage = function () {
+            $http
+                .get('api/v1/current-user')
+                .success(function (data, status, headers, config) {
+                    $scope.profile = data;
+                }).error(function (data, status, header, config) {
+
+            });
+
+
             $scope.profileActive = 'active';
             $scope.diagnosesActive = '';
             $scope.diagnoseRowShow = false
         };
+
         $scope.diagnosesPage = function () {
+            $http
+                .get('api/v1/current-diagnoses')
+                .success(function (data, status, headers, config) {
+                    $scope.diagnoses = data.diagnoses;
+                }).error(function (data, status, header, config) {
+
+            });
+
             $scope.profileActive = '';
             $scope.diagnoseRowShow = false;
             $scope.diagnosesActive = 'active'
         };
+
         $scope.diagnoseRow = function (id) {
+            angular.forEach($scope.diagnoses, function (value, key) {
+                if (value['id'] == id) {
+                    $scope.diagnose = value;
+                    return;
+                }
+            });
+
             $scope.profileActive = '';
             $scope.diagnosesActive = '';
             $scope.diagnoseRowShow = true;
-            $http.get('api/v1/diagnose/'+id)
-                .success(function (data, status, headers, config) {
-                    $scope.diagnose = data
-                }
-            )
+
 
         };
-        $scope.goToLink = function (id) {
-            $scope.profile.first_name = "LOL " + id;
-            $window.location = 'api/v1/diagnose/' + id;
-        };
+
         $scope.logout = function () {
             $http
                 .post('api/v1/auth/logout')
@@ -83,6 +68,13 @@ angular.module('profileApp', ['ngRoute'])
                 $window.location = '/';
             });
         };
+
+        $scope.setBlood = function (type) {
+            $scope.profile.blood_type = type;
+        };
+
+        $scope.profileActive = 'active';
+        $scope.profilePage();
 
 
     });

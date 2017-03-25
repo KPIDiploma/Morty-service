@@ -18,10 +18,8 @@ angular.module('indexApp', ['ngRoute'])
             $http
                 .post('api/v1/auth/login', $scope.user)
                 .success(function (data, status, headers, config) {
-                    $window.sessionStorage.token = data.token;
                     $window.location = '/profile';
                 }).error(function (data, status, header, config) {
-                    delete $window.sessionStorage.token;
                     $scope.result = 'email or password not correct';
             });
         };
