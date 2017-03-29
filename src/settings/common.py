@@ -27,6 +27,10 @@ SECRET_KEY = 'q*vbotllblv44+7@q#xg(j#h8ggsa2g!*cfj9!o_kuyx8fgwz%'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+SITE_ID = 1
+
+SITE_PROTOCOL = 'http'
+
 ALLOWED_HOSTS = []
 
 # Application definition
@@ -38,7 +42,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    # 'django.contrib.sites',
+    'django.contrib.sites',
 
     'rest_framework',
     'pkg.patient',

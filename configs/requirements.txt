@@ -1,3 +1,9 @@
 Django==1.10.5
 djangorestframework==3.5.4
 psycopg2
+
+
+from pkg.patient.notifications.service import UserNotifications
+from pkg.patient.models import Patient
+user = Patient.objects.get(email='kryvonis.artem@gmail.com')
+UserNotifications().send_password_to_user(user,'OLOLOL')

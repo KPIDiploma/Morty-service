@@ -13,3 +13,10 @@ DATABASES['default'].update({
     'HOST': '127.0.0.1',
     'PORT': '25432',
 })
+
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'kryvonis.artem@gmail.com'
+EMAIL_HOST_PASSWORD = 'Artem17Artem!'
+

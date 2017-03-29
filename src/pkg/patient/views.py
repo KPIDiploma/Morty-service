@@ -15,10 +15,7 @@ from django.contrib.auth import authenticate
 from django.contrib.auth import login, logout
 
 from pkg.patient.models import Patient
-from pkg.patient.serializers import PatientSerializer
-from pkg.patient.serializers import FullPatientSerializer
-from pkg.patient.serializers import PatientDiagnosesSerializer
-from pkg.patient.serializers import PatientRegisterSerializer
+from pkg.patient.serializers import *
 
 
 def index(request):
@@ -119,3 +116,20 @@ class RegistrationView(generics.CreateAPIView):
     permission_classes = (
         permissions.IsAdminUser,
     )
+
+
+class UpdatePasswordView(generics.GenericAPIView):
+    """
+    Use this endpoint to update password for current user.
+    """
+    serializer_class = PatientUpdatePasswordSerializer
+    permission_classes = (
+        permissions.IsAuthenticated,
+    )
+
+    def post(self, request, *args, **kwargs):
+        data = request.data
+        data.update({'email': request.user.email})
+        sz = self.get_serializer(data=request.data)
+        sz.is_valid(raise_exception=True)
+        return Response(sz.data, status=status.HTTP_200_OK)
