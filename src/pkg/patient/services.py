@@ -1,6 +1,6 @@
 from django.contrib.auth import get_user_model
 
-# from pkg.patient.notifications.service import UserNotifications
+from pkg.patient.notifications.service import UserNotifications
 
 
 class PatientService:
@@ -16,18 +16,6 @@ class PatientService:
             last_name=last_name,
             **extra_fields
         )
-
-        # if not is_active:
-        #     UserService.email_service.send_user_activation(user)
-        # else:
-        #     UserService.email_service.success_register_to_user(user)
+        UserNotifications().send_password_to_user(user=user, password=password)
 
         return user
-
-    # @staticmethod
-    # def activate(user):
-    #     user.is_active = True
-    #     user.save()
-    #
-    #     UserService.email_service.success_register_to_user(user)
-    #     return user

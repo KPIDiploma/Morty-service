@@ -8,7 +8,6 @@ from rest_framework import serializers
 
 from pkg.patient.models import Patient
 from pkg.patient.services import PatientService
-from pkg.patient.notifications.service import UserNotifications
 from pkg.diagnose.serializers import DiagnoseSerializer
 
 
@@ -91,7 +90,6 @@ class PatientRegisterSerializer(serializers.ModelSerializer):
         last_name = validated_data.get('last_name')
 
         user = PatientService.register(email, password, first_name, last_name)
-        UserNotifications().send_password_to_user(user=user, password=password)
         return user
 
 

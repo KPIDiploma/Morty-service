@@ -46,15 +46,11 @@ angular.module('profileApp', ['ngRoute'])
             angular.forEach($scope.diagnoses, function (value, key) {
                 if (value['id'] == id) {
                     $scope.diagnose = value;
-                    return;
                 }
             });
-
             $scope.profileActive = '';
             $scope.diagnosesActive = '';
             $scope.diagnoseRowShow = true;
-
-
         };
 
         $scope.logout = function () {
