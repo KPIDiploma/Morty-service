@@ -7,6 +7,7 @@ from rest_framework import serializers
 from rest_framework import generics
 from rest_framework import permissions
 from rest_framework.response import Response
+from rest_framework.decorators import detail_route
 
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
@@ -15,6 +16,8 @@ from django.contrib.auth import authenticate
 from django.contrib.auth import login, logout
 
 from pkg.patient.models import Patient
+from pkg.common.filters import IsAuthorFilterBackend
+from pkg.common.permissions import MyTokenPermission
 from pkg.patient.serializers import *
 
 
@@ -95,17 +98,6 @@ class CurrentUserFilesView(views.APIView):
         return Response(serializer.data)
 
 
-class PatientViewSet(viewsets.ModelViewSet):
-    permission_classes = (permissions.IsAdminUser,)
-    queryset = Patient.objects.all()
-    serializer_class = FullPatientSerializer
-
-    def list(self, request, *args, **kwargs):
-        queryset = Patient.objects.all()
-        serializer = PatientSerializer(queryset, many=True)
-        return Response(serializer.data)
-
-
 class RegistrationView(generics.CreateAPIView):
     """
     Use this endpoint to register new user.
@@ -133,3 +125,29 @@ class UpdatePasswordView(generics.GenericAPIView):
         sz = self.get_serializer(data=request.data)
         sz.is_valid(raise_exception=True)
         return Response(sz.data, status=status.HTTP_200_OK)
+
+
+class PatientViewSet(viewsets.ModelViewSet):
+    # permission_classes = (MyTokenPermission,)
+    queryset = Patient.objects.all()
+    serializer_class = FullPatientSerializer
+    # filter_backends = (IsAuthorFilterBackend,)
+
+    def get(self, request, *args, **kwargs):
+        # token = request.query_params.get('token')
+        # patient_id, doctor_id = token.split(':')
+
+        queryset = Patient.get_current_patients(request.user)
+        serializer = PatientSerializer(queryset, many=True)
+        return Response(serializer.data)
+
+    @detail_route(methods=['post', ])
+    def add_patient(self, request, *args, **kwargs):
+        token = request.query_params.get('token')
+
+        doctor = Patient.objects.get(email=request.user.email)
+        data = request.data
+        doctor.patients.add()
+        return Response(
+            # data=BookSerializer(book).data,
+            status=status.HTTP_200_OK)

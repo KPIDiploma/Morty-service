@@ -18,5 +18,6 @@ EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_HOST_USER = 'kryvonis.artem@gmail.com'
-EMAIL_HOST_PASSWORD = 'Artem17Artem!'
+EMAIL_HOST_PASSWORD = ''
 
+SECRET_KEY = 'q*12333123afasvbotllblv44+7@q#xg(j#h8ggsa2g!*cfj9!o_kuyx8fgwz%'

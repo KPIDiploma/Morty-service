@@ -1,10 +1,9 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.contrib.auth.base_user import BaseUserManager
-# from django.contrib.auth.validators import UnicodeUsernameValidator
 from django.utils.translation import ugettext as _
 
-from pkg.patient.choices import BloodTypeEnum
+from pkg.patient.choices import BloodTypeEnum, PatientStatus
 
 
 class PatientManager(BaseUserManager):
@@ -68,13 +67,37 @@ class Patient(AbstractUser):
     username = models.CharField(
         verbose_name=_('username'),
         max_length=100,
+        null=True,
         blank=True,
     )
+
     blood_type = models.CharField(
         choices=BloodTypeEnum.choices(),
-        max_length=3
+        max_length=3,
+        null=True,
+        blank=True,
     )
+
+    doctor = models.IntegerField(
+        null=True,
+        blank=True,
+    )
+
+    status = models.IntegerField(
+        choices=PatientStatus.choices(),
+        null=True,
+        blank=True,
+    )
+
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['first_name', 'last_name']
 
     objects = PatientManager()
+
+    @staticmethod
+    def get_current_patients(author):
+        patients = Patient.objects.get(email=author.email).patients.filter(
+            status=PatientStatus.Hospital.value
+        )
+
+        return patients

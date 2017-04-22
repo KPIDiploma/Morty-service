@@ -5,12 +5,16 @@ class ChoiceBaseEnum(Enum):
     @classmethod
     def choices(cls):
         return tuple([
-                         (enum.value, name) for name, enum in
-                         cls.__members__.items()
-                         ])
+            (enum.value, name) for name, enum in
+            cls.__members__.items()
+        ])
 
 
 class ChoiceStringEnum(str, ChoiceBaseEnum):
+    pass
+
+
+class ChoiceEnum(int, ChoiceBaseEnum):
     pass
 
 
@@ -26,3 +30,9 @@ class BloodTypeEnum(ChoiceStringEnum):
 
     Fourth_positive = 'AB+'
     Fourth_negative = 'AB-'
+
+
+class PatientStatus(ChoiceEnum):
+    Live = 0
+    Hospital = 1
+    Dead = 2

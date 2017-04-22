@@ -30,7 +30,7 @@ class FullPatientSerializer(serializers.ModelSerializer):
         model = Patient
         fields = (
             'id', 'first_name', 'last_name', 'birthday', 'email',
-            'blood_type',
+            'blood_type','doctor', 'status',
         )
 
 
