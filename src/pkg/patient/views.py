@@ -5,6 +5,7 @@ from rest_framework import status
 from rest_framework import views
 from rest_framework import serializers
 from rest_framework import generics
+from rest_framework import filters
 from rest_framework import permissions
 from rest_framework.response import Response
 from rest_framework.decorators import detail_route
@@ -18,6 +19,7 @@ from django.contrib.auth import login, logout
 from src.pkg.patient.models import Patient
 from src.pkg.common.filters import IsAuthorFilterBackend
 from src.pkg.common.permissions import MyTokenPermission
+from src.pkg.patient.pagination import StandardResultsSetPagination
 from src.pkg.patient.serializers import *
 
 
@@ -103,6 +105,13 @@ class RegistrationView(generics.CreateAPIView):
     Use this endpoint to register new user.
     After the registration to the specified email
     will receive a message of activation.
+    POST 
+    {
+        email:'',
+        password:'',
+        password_confirm:'',
+        fullname:''
+    }
     """
     serializer_class = PatientRegisterSerializer
     permission_classes = (
@@ -130,14 +139,14 @@ class UpdatePasswordView(generics.GenericAPIView):
 class PatientViewSet(viewsets.ModelViewSet):
     permission_classes = (permissions.IsAuthenticated,)
     queryset = Patient.objects.all()
-    serializer_class = FullPatientSerializer
+    serializer_class = PatientSerializer
+    filter_backends = (filters.SearchFilter,)
+    search_fields = ('fullname',)
+    pagination_class = StandardResultsSetPagination
 
     # filter_backends = (IsAuthorFilterBackend,)
 
     def get(self, request, *args, **kwargs):
-        # token = request.query_params.get('token')
-        # patient_id, doctor_id = token.split(':')
-
         queryset = Patient.get_current_patients(request.user)
         serializer = PatientSerializer(queryset, many=True)
         return Response(serializer.data)

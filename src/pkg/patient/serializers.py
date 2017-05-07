@@ -93,10 +93,9 @@ class PatientRegisterSerializer(serializers.ModelSerializer):
 
         email = validated_data.get('email')
         password = Patient.objects.make_random_password()
-        first_name = validated_data.get('first_name')
-        last_name = validated_data.get('last_name')
+        fullname = validated_data.get('fullname')
 
-        user = PatientService.register(email, password, first_name, last_name)
+        user = PatientService.register(email, password, fullname=fullname)
         return user
 
 
