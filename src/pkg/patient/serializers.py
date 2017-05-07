@@ -55,10 +55,9 @@ class PatientDiagnosesSerializer(serializers.ModelSerializer):
 class PatientRegisterSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ('id', 'email', 'password', 'password_confirm', 'fullname')
+        fields = ('id', 'email', 'token', 'birthday', 'fullname')
 
-    password = serializers.CharField(write_only=True)
-    password_confirm = serializers.CharField(write_only=True)
+    token = serializers.CharField(write_only=True)
 
     default_error_messages = {
         'password_mismatch': 'The two password fields didn\'t match.',
@@ -66,20 +65,21 @@ class PatientRegisterSerializer(serializers.ModelSerializer):
     }
 
     def validate(self, attrs):
-        password = attrs.get('password')
-        password_confirm = attrs.get('password_confirm')
+        token = attrs.get('token')
 
         try:
-            validate_password(password)
+            if token != '123':
+                raise ValidationError('Secret token mismatch')
+                # validate_password(password)
         except ValidationError as e:
             raise serializers.ValidationError({
-                'password': e
+                'Token': e
             })
 
-        if password != password_confirm:
-            raise serializers.ValidationError({
-                'password_confirm': self.error_messages['password_mismatch']
-            })
+        # if password != password_confirm:
+        #     raise serializers.ValidationError({
+        #         'password_confirm': self.error_messages['password_mismatch']
+        #     })
 
         return super().validate(attrs)
 
@@ -94,8 +94,10 @@ class PatientRegisterSerializer(serializers.ModelSerializer):
         email = validated_data.get('email')
         password = Patient.objects.make_random_password()
         fullname = validated_data.get('fullname')
+        birthday = validated_data.get('birthday')
 
-        user = PatientService.register(email, password, fullname=fullname)
+        user = PatientService.register(email, password, fullname=fullname,
+                                       birthday=birthday)
         return user
 
 
