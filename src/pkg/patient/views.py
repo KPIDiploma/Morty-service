@@ -108,8 +108,7 @@ class RegistrationView(generics.CreateAPIView):
     POST 
     {
         email:'',
-        password:'',
-        password_confirm:'',
+        birthday: mm/dd/yyyy
         fullname:''
     }
     """
