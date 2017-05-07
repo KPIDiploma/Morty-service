@@ -3,7 +3,7 @@
 .idea/
 
 venv/
-src/settings/local.sample.py
+src/settings/local.py
 .DS_Store
 media/
 src/.DS_Store

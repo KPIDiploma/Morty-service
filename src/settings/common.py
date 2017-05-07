@@ -31,7 +31,7 @@ SITE_ID = 1
 
 SITE_PROTOCOL = 'http'
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 # Application definition
 
