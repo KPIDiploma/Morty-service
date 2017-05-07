@@ -1,6 +1,7 @@
 from django.db import models
 
 from pkg.patient.models import Patient
+from pkg.patient.models import Doctor
 
 
 # Create your models here.

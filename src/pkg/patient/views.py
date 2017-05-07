@@ -131,6 +131,7 @@ class PatientViewSet(viewsets.ModelViewSet):
     # permission_classes = (MyTokenPermission,)
     queryset = Patient.objects.all()
     serializer_class = FullPatientSerializer
+
     # filter_backends = (IsAuthorFilterBackend,)
 
     def get(self, request, *args, **kwargs):

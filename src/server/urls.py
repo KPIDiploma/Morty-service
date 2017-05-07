@@ -28,13 +28,18 @@ from pkg.patient.views import CurrentUserView
 from pkg.patient.views import CurrentUserDiagnosesView
 from pkg.patient.views import CurrentUserFilesView
 
+
 urlpatterns = [
     url(r'^$', index, name='index'),
-    url(r'^api/v1/auth/login$', LoginView.as_view(), name='login'),
-    url(r'^api/v1/auth/logout$', LogoutView.as_view(), name='logout'),
-    url(r'^api/v1/current-user$', CurrentUserView.as_view(), name='current'),
-    url(r'^api/v1/current-diagnoses$', CurrentUserDiagnosesView.as_view(), name='current'),
-    url(r'^api/v1/current-files/(?P<pk>[0-9]+)$', CurrentUserFilesView.as_view(), name='current'),
+    url(r'^api/v1/auth/login$', LoginView.as_view(), name='apilogin'),
+    url(r'^api/v1/auth/logout$', LogoutView.as_view(),
+        name='apilogout'),
+    url(r'^api/v1/current-user$', CurrentUserView.as_view(),
+        name='apicurrent-user'),
+    url(r'^api/v1/current-diagnoses$', CurrentUserDiagnosesView.as_view(),
+        name='apicurrent-diagnose'),
+    url(r'^api/v1/current-files/(?P<pk>[0-9]+)$',
+        CurrentUserFilesView.as_view(), name='apicurrent-files'),
     url(r'^profile$', profile, name='profile'),
 
     url(r'^admin/', admin.site.urls),

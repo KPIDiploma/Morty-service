@@ -6,7 +6,7 @@ from django.db.transaction import atomic
 
 from rest_framework import serializers
 
-from pkg.patient.models import Patient
+from pkg.patient.models import Patient, Doctor
 from pkg.patient.services import PatientService
 from pkg.diagnose.serializers import DiagnoseSerializer
 
@@ -22,15 +22,23 @@ __all__ = [
 class PatientSerializer(serializers.ModelSerializer):
     class Meta:
         model = Patient
-        fields = ('id', 'first_name', 'last_name', 'email')
+        fields = ('id', 'fullname')
+
+
+class DoctorSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Doctor
+        fields = ('id', 'fullname')
 
 
 class FullPatientSerializer(serializers.ModelSerializer):
+    doctors = DoctorSerializer(many=True)
+
     class Meta:
         model = Patient
         fields = (
-            'id', 'first_name', 'last_name', 'birthday', 'email',
-            'blood_type','doctor', 'status',
+            'id', 'email', 'fullname', 'birthday', 'address',
+            'mobile', 'sex', 'blood_type', 'doctors', 'status',
         )
 
 
@@ -47,8 +55,7 @@ class PatientDiagnosesSerializer(serializers.ModelSerializer):
 class PatientRegisterSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ('id', 'email', 'password', 'password_confirm', 'first_name',
-                  'last_name')
+        fields = ('id', 'email', 'password', 'password_confirm', 'fullname')
 
     password = serializers.CharField(write_only=True)
     password_confirm = serializers.CharField(write_only=True)

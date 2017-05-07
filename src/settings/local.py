@@ -8,6 +8,7 @@ from .common import *
 
 
 DATABASES['default'].update({
+    'NAME': 'morty_db',
     'USER': 'morty',
     'PASSWORD': 'admin',
     'HOST': '127.0.0.1',

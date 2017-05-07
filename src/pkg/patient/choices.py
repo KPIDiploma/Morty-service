@@ -32,6 +32,11 @@ class BloodTypeEnum(ChoiceStringEnum):
     Fourth_negative = 'AB-'
 
 
+class SexEnum(ChoiceStringEnum):
+    male = 'male'
+    female = 'female'
+
+
 class PatientStatus(ChoiceEnum):
     Live = 0
     Hospital = 1
