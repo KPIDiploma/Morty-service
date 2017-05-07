@@ -1,4 +1,4 @@
-from pkg.common.notifications.service import EmailService
+from src.pkg.common.notifications.service import EmailService
 
 
 class EmailNotification:
