@@ -43,8 +43,8 @@ urlpatterns = [
     url(r'^profile$', profile, name='profile'),
 
     url(r'^admin/', admin.site.urls),
-    url(r'^api/', include('pkg.patient.urls', namespace='api')),
-    url(r'^api/', include('pkg.diagnose.urls', namespace='api')),
+    url(r'^api/', include('src.pkg.patient.urls', namespace='api')),
+    url(r'^api/', include('src.pkg.diagnose.urls', namespace='api')),
     url(r'^api/v1/register/', RegistrationView.as_view()),
 ]
 
