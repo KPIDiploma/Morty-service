@@ -35,12 +35,14 @@ class DoctorSerializer(serializers.ModelSerializer):
 
 class FullPatientSerializer(serializers.ModelSerializer):
     doctors = DoctorSerializer(many=True)
+    diagnoses = DiagnoseSerializer(many=True)
 
     class Meta:
         model = Patient
         fields = (
             'id', 'email', 'fullname', 'birthday', 'address',
             'mobile', 'sex', 'blood_type', 'doctors', 'status',
+            'diagnoses'
         )
 
 

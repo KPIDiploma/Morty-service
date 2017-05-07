@@ -7,8 +7,8 @@ from src.pkg.patient.models import Doctor
 # Create your models here.
 class Diagnose(models.Model):
     text = models.TextField()
-    diagnose = models.ForeignKey(Patient, related_name='diagnoses',
-                                 on_delete=models.CASCADE)
+    patient = models.ForeignKey(Patient, related_name='diagnoses',
+                                on_delete=models.CASCADE)
 
     def __str__(self):
         return str(self.pk)

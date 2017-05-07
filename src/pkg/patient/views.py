@@ -12,6 +12,7 @@ from rest_framework.decorators import detail_route
 
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
+from django.shortcuts import get_object_or_404
 from django.shortcuts import redirect
 from django.contrib.auth import authenticate
 from django.contrib.auth import login, logout
@@ -148,8 +149,13 @@ class PatientViewSet(viewsets.ModelViewSet):
         serializer = PatientSerializer(queryset, many=True)
         return Response(serializer.data)
 
+    def retrieve(self, request, pk=None, *args, **kwargs):
+        patient = get_object_or_404(self.queryset, pk=pk)
+        serializers = FullPatientSerializer(patient)
+        return Response(serializers.data)
+
     @detail_route(methods=['post', ])
-    def add_patient(self, request, *args, **kwargs):
+    def add_patient(self, request, pk=None, *args, **kwargs):
         token = request.query_params.get('token')
 
         doctor = Patient.objects.get(email=request.user.email)

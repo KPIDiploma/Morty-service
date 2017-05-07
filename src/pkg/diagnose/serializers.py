@@ -15,9 +15,17 @@ class DiagnoseFileSerializer(serializers.ModelSerializer):
         fields = ('id', 'file',)
 
 
-class DiagnoseSerializer(serializers.ModelSerializer):
-    files = DiagnoseFileSerializer(many=True)
+class DiagnoseWithFileSerializer(serializers.ModelSerializer):
+    files = DiagnoseFileSerializer(many=True, required=False)
 
     class Meta:
         model = Diagnose
-        fields = ('id', 'text', 'files')
+        fields = ('id', 'text', 'patient', 'files')
+
+
+class DiagnoseSerializer(serializers.ModelSerializer):
+    # patient = PatientSerializer()
+
+    class Meta:
+        model = Diagnose
+        fields = ('id', 'text')
