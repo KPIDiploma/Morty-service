@@ -128,7 +128,7 @@ class UpdatePasswordView(generics.GenericAPIView):
 
 
 class PatientViewSet(viewsets.ModelViewSet):
-    # permission_classes = (MyTokenPermission,)
+    permission_classes = (permissions.IsAuthenticated,)
     queryset = Patient.objects.all()
     serializer_class = FullPatientSerializer
 
