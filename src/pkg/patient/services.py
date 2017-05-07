@@ -1,6 +1,6 @@
 from django.contrib.auth import get_user_model
 
-from pkg.patient.notifications.service import UserNotifications
+from src.pkg.patient.notifications.service import UserNotifications
 
 
 class PatientService:

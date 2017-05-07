@@ -1,4 +1,4 @@
-from pkg.common.notifications.messages import MessageNotification
+from src.pkg.common.notifications.messages import MessageNotification
 
 
 class PasswordNotification(MessageNotification):

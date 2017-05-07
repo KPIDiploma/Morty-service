@@ -6,9 +6,9 @@ from django.db.transaction import atomic
 
 from rest_framework import serializers
 
-from pkg.patient.models import Patient, Doctor
-from pkg.patient.services import PatientService
-from pkg.diagnose.serializers import DiagnoseSerializer
+from src.pkg.patient.models import Patient, Doctor
+from src.pkg.patient.services import PatientService
+from src.pkg.diagnose.serializers import DiagnoseSerializer
 
 
 User = get_user_model()

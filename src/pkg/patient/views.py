@@ -15,10 +15,10 @@ from django.shortcuts import redirect
 from django.contrib.auth import authenticate
 from django.contrib.auth import login, logout
 
-from pkg.patient.models import Patient
-from pkg.common.filters import IsAuthorFilterBackend
-from pkg.common.permissions import MyTokenPermission
-from pkg.patient.serializers import *
+from src.pkg.patient.models import Patient
+from src.pkg.common.filters import IsAuthorFilterBackend
+from src.pkg.common.permissions import MyTokenPermission
+from src.pkg.patient.serializers import *
 
 
 def index(request):

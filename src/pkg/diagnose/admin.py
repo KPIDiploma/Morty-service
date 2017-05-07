@@ -1,5 +1,5 @@
-from .models import Diagnose
-from .models import DiagnoseFile
+from src.pkg.diagnose.models import Diagnose
+from src.pkg.diagnose.models import DiagnoseFile
 from django.contrib import admin
 
 

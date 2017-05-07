@@ -1,6 +1,6 @@
 from rest_framework import serializers
-from pkg.diagnose.models import Diagnose
-from pkg.diagnose.models import DiagnoseFile
+from src.pkg.diagnose.models import Diagnose
+from src.pkg.diagnose.models import DiagnoseFile
 
 
 class FileSerializer(serializers.ModelSerializer):

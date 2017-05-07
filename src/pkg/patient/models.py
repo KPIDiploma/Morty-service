@@ -4,7 +4,7 @@ from django.contrib.auth.base_user import BaseUserManager
 from django.utils.translation import ugettext as _
 from django.contrib.postgres.fields import ArrayField
 
-from pkg.patient.choices import BloodTypeEnum, PatientStatus, SexEnum
+from src.pkg.patient.choices import BloodTypeEnum, PatientStatus, SexEnum
 
 
 class PatientManager(BaseUserManager):

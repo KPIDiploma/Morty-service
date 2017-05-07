@@ -1,8 +1,8 @@
 from django.contrib.auth.tokens import default_token_generator
 
-from pkg.patient.notifications.messages import PasswordNotification
-from pkg.common.notifications.base import EmailNotification
-from pkg.patient.utils import encode_uid
+from src.pkg.patient.notifications.messages import PasswordNotification
+from src.pkg.common.notifications.base import EmailNotification
+from src.pkg.patient.utils import encode_uid
 
 
 class UserNotifications(EmailNotification):
