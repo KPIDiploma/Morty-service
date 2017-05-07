@@ -19,14 +19,14 @@ from django.conf.urls.static import static
 from django.conf import settings
 from django.contrib import admin
 
-from pkg.patient.views import RegistrationView
-from pkg.patient.views import profile
-from pkg.patient.views import index
-from pkg.patient.views import LoginView
-from pkg.patient.views import LogoutView
-from pkg.patient.views import CurrentUserView
-from pkg.patient.views import CurrentUserDiagnosesView
-from pkg.patient.views import CurrentUserFilesView
+from src.pkg.patient.views import RegistrationView
+from src.pkg.patient.views import profile
+from src.pkg.patient.views import index
+from src.pkg.patient.views import LoginView
+from src.pkg.patient.views import LogoutView
+from src.pkg.patient.views import CurrentUserView
+from src.pkg.patient.views import CurrentUserDiagnosesView
+from src.pkg.patient.views import CurrentUserFilesView
 
 
 urlpatterns = [
