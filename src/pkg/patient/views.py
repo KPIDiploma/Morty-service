@@ -114,9 +114,7 @@ class RegistrationView(generics.CreateAPIView):
     }
     """
     serializer_class = PatientRegisterSerializer
-    permission_classes = (
-        permissions.IsAdminUser,
-    )
+    permission_classes = (MyTokenPermission,)
 
 
 class UpdatePasswordView(generics.GenericAPIView):
@@ -137,7 +135,7 @@ class UpdatePasswordView(generics.GenericAPIView):
 
 
 class PatientViewSet(viewsets.ModelViewSet):
-    permission_classes = (permissions.IsAuthenticated,)
+    permission_classes = (MyTokenPermission,)
     queryset = Patient.objects.all()
     serializer_class = PatientSerializer
     filter_backends = (filters.SearchFilter,)

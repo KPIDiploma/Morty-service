@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from django.contrib.auth import get_user_model
 from django.contrib.auth import authenticate
 from django.contrib.auth.password_validation import validate_password
@@ -55,9 +57,7 @@ class PatientDiagnosesSerializer(serializers.ModelSerializer):
 class PatientRegisterSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ('id', 'email', 'token', 'birthday', 'fullname')
-
-    token = serializers.CharField(write_only=True)
+        fields = ('id', 'email', 'birthday', 'fullname')
 
     default_error_messages = {
         'password_mismatch': 'The two password fields didn\'t match.',
@@ -65,22 +65,19 @@ class PatientRegisterSerializer(serializers.ModelSerializer):
     }
 
     def validate(self, attrs):
-        token = attrs.get('token')
+        birthday = attrs.get('birthday')
 
         try:
-            if token != '123':
-                raise ValidationError('Secret token mismatch')
-                # validate_password(password)
+            if datetime.now().date() <= birthday:
+                raise ValidationError('Birthday is not correct')
         except ValidationError as e:
             raise serializers.ValidationError({
-                'Token': e
+                'Field invalid': e
             })
-
-        # if password != password_confirm:
-        #     raise serializers.ValidationError({
-        #         'password_confirm': self.error_messages['password_mismatch']
-        #     })
-
+        except Exception as e:
+            raise serializers.ValidationError({
+                'invalid': e
+            })
         return super().validate(attrs)
 
     def validate_email(self, value):
