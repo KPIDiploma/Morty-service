@@ -1,13 +1,17 @@
 from rest_framework import viewsets
+from rest_framework import status
 from rest_framework.response import Response
 
 from django.shortcuts import get_object_or_404
 
 from src.pkg.diagnose.models import Diagnose
 from src.pkg.diagnose.models import DiagnoseFile
-from src.pkg.diagnose.serializers import DiagnoseSerializer
-from src.pkg.diagnose.serializers import DiagnoseWithFileSerializer
-from src.pkg.diagnose.serializers import FileSerializer
+from src.pkg.diagnose.serializers import (
+    DiagnoseSerializer,
+    DiagnosePostSerializer,
+    DiagnoseWithFileSerializer,
+    FileSerializer
+)
 from src.pkg.common.permissions import MyTokenPermission
 
 
@@ -20,6 +24,13 @@ class DiagnoseViewSet(viewsets.ModelViewSet):
         diagnose = get_object_or_404(self.queryset, pk=pk)
         serializers = DiagnoseWithFileSerializer(diagnose)
         return Response(serializers.data)
+
+    def create(self, request, *args, **kwargs):
+        serializer = DiagnosePostSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 # class DiagnoseFileViewSet(viewsets.ModelViewSet):
