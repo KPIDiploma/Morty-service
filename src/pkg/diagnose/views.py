@@ -16,6 +16,13 @@ from src.pkg.common.permissions import MyTokenPermission
 
 
 class DiagnoseViewSet(viewsets.ModelViewSet):
+    """
+    POST
+    {
+     "text":"Diagnose1",
+     "patient": <patient_id>
+    }
+    """
     queryset = Diagnose.objects.all()
     serializer_class = DiagnoseSerializer
     permission_classes = (MyTokenPermission,)
