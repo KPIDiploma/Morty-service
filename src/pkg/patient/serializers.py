@@ -59,7 +59,10 @@ class PatientDiagnosesSerializer(serializers.ModelSerializer):
 class PatientRegisterSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ('id', 'email', 'birthday', 'fullname')
+        fields = (
+            'id', 'email', 'fullname', 'birthday', 'address',
+            'mobile', 'sex', 'blood_type'
+        )
 
     default_error_messages = {
         'password_mismatch': 'The two password fields didn\'t match.',
@@ -70,7 +73,7 @@ class PatientRegisterSerializer(serializers.ModelSerializer):
         birthday = attrs.get('birthday')
 
         try:
-            if datetime.now().date() <= birthday:
+            if datetime.now().date() < birthday:
                 raise ValidationError('Birthday is not correct')
         except ValidationError as e:
             raise serializers.ValidationError({
