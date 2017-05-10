@@ -3,3 +3,24 @@
 .idea/
 
 venv/
+src/settings/local.py
+.DS_Store
+media/
+src/.DS_Store
+src/pkg/.DS_Store
+src/pkg/__pycache__/
+src/pkg/common/__pycache__/
+src/pkg/common/notifications/__pycache__/
+src/pkg/diagnose/__pycache__/
+src/pkg/diagnose/migrations/__pycache__/
+src/pkg/patient/.DS_Store
+src/pkg/patient/__pycache__/
+src/pkg/patient/migrations/__pycache__/
+src/pkg/patient/notifications/__pycache__/
+src/pkg/patient/static/.DS_Store
+src/pkg/patient/static/patient/.DS_Store
+src/server/__pycache__/
+src/settings/__pycache__/
+templates/.DS_Store
+var/log/django.err
+

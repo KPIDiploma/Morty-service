@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+{% load i18n static %}
+<html lang="en" ng-app="profileApp">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <link rel="stylesheet" type="text/css"
+        href='{% static "patient/css/profile.css" %}'>
+  <link rel="stylesheet" type="text/css"
+        href='{% static "patient/css/diagnoses.css" %}'>
+  <link rel="stylesheet"
+        href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+</head>
+<body ng-controller="profileController">
+<div class="row">
+  <div class="col-md-2">
+    <ul class="nav nav-pills nav-stacked">
+      <li role="presentation" class="[[profileActive]]">
+        <a href="#" ng-click="profilePage()">Profile</a>
+      </li>
+      <li role="presentation" class="[[diagnosesActive]]">
+        <a href="#" ng-click="diagnosesPage()">Diagnoses</a>
+      </li>
+      <li role="presentation" class="">
+        <a href="#" ng-click="logout()">Logout</a>
+      </li>
+    </ul>
+  </div>
+  <div class="col-md-10">
+
+    <!--********* -->
+    <!-- PROFILE  -->
+    <!--********* -->
+    <div class="profile-info" ng-show="profileActive">
+      <div class="form">
+        <p>Email : <input ng-model="profile.email" type="text"/></p>
+        <p>Name : <input ng-model="profile.first_name" type="text"/></p>
+        <p>Surname : <input ng-model="profile.last_name" type="text"/></p>
+
+        <div class="dropdown">
+          Blood Type :
+          <button class="btn btn-default dropdown-toggle" type="button"
+                  id="dropdownMenu1" data-toggle="dropdown"
+                  aria-haspopup="true"
+                  aria-expanded="true">
+            [[profile.blood_type]]
+            <span class="caret"></span>
+          </button>
+          <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+            <li><a href="#" ng-click="setBlood('0+')">0+</a></li>
+            <li><a href="#" ng-click="setBlood('0-')">0-</a></li>
+            <li><a href="#" ng-click="setBlood('A+')">A+</a></li>
+            <li><a href="#" ng-click="setBlood('A-')">A-</a></li>
+            <li><a href="#" ng-click="setBlood('B+')">B+</a></li>
+            <li><a href="#" ng-click="setBlood('B-')">B-</a></li>
+            <li><a href="#" ng-click="setBlood('AB+')">AB+</a></li>
+            <li><a href="#" ng-click="setBlood('AB-')">AB-</a></li>
+          </ul>
+          <!--</p>-->
+        </div>
+      <button type="button" class="btn btn-success">Save</button>
+      </div>
+    </div>
+
+    <!--***************** -->
+    <!-- DIAGNOSES TABLE  -->
+    <!--***************** -->
+    <div class="profile-diagnoses" ng-show="diagnosesActive">
+      <table class="table">
+        <thead>
+        <tr>
+          <th>#</th>
+          <th>Date</th>
+          <th>Title</th>
+
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="row in diagnoses" ng-click="diagnoseRow(row.id)">
+          <td>[[row.id]]</td>
+          <td>20-03-2017</td>
+          <td>[[row.text]]</td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+    <!--*************** -->
+    <!-- DIAGNOSES ROW  -->
+    <!--*************** -->
+    <div class="profile-diagnose" ng-show="diagnoseRowShow">
+      <p>Text : [[diagnose.text]]</p>
+
+      <table class="table">
+        <thead>
+        <tr>
+          <th>#</th>
+          <th>File</th>
+
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="row in diagnose.files">
+          <td>[[row.id]]</td>
+          <td>[[row.file]]</td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.0rc1/angular-route.min.js"></script>
+<script src='{% static "patient/js/profile.js"%}'></script>
+</body>
+</html>
