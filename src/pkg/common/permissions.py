@@ -1,4 +1,9 @@
+from datetime import datetime
+
+import rsa
 from rest_framework import permissions
+
+from django.conf import settings
 
 
 class IsCurrentUserOrAdminOnly(permissions.IsAdminUser):
@@ -24,7 +29,28 @@ class IsAuthorOrReadOnly(permissions.IsAuthenticated):
 
 class MyTokenPermission(permissions.AllowAny):
     def has_permission(self, request, view):
-        token = request.query_params.get('token')
-        if token:
-            return True
-        return False
+        return True
+    #     token = request.query_params.get('token')
+    #     if token:
+    #         token = rsa.decrypt(
+    #             token,
+    #             rsa.PrivateKey(**settings.SANYA_CLINIC_PRIVATE_KEY)
+    #         ).decode()
+    #         token_timestamp, doctor_id = token.split('/')
+    #
+    #         try:
+    #             time = datetime.strptime(
+    #                 token_timestamp[:19],
+    #                 '%Y-%m-%dT%H:%M:%S'
+    #             )
+    #         except:
+    #             return False
+    #
+    #         now_time = datetime.utcnow()
+    #         delta = now_time - time
+    #         if delta.seconds > 300:
+    #             return False
+    #
+    #         return True
+    #     return False
+
