@@ -16,6 +16,7 @@ from src.pkg.diagnose.serializers import (
 from src.pkg.common.permissions import MyTokenPermission
 from src.pkg.common.pagination import StandardResultsSetPagination
 
+
 class DiagnoseViewSet(viewsets.ModelViewSet):
     """
     POST
@@ -29,7 +30,7 @@ class DiagnoseViewSet(viewsets.ModelViewSet):
     serializer_class = DiagnoseForPatientSerializer
     permission_classes = (MyTokenPermission,)
     filter_backends = (filters.SearchFilter,)
-    search_fields = ('fullname',)
+    search_fields = ('text',)
     pagination_class = StandardResultsSetPagination
 
     def retrieve(self, request, pk=None, *args, **kwargs):

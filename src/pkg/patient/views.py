@@ -17,7 +17,7 @@ from django.shortcuts import redirect
 from django.contrib.auth import authenticate
 from django.contrib.auth import login, logout
 
-from src.pkg.patient.models import Patient
+from src.pkg.patient.models import Patient, Doctor
 from src.pkg.common.filters import IsAuthorFilterBackend
 from src.pkg.common.permissions import MyTokenPermission
 from src.pkg.common.pagination import StandardResultsSetPagination
@@ -154,3 +154,30 @@ class PatientViewSet(viewsets.ModelViewSet):
         serializers = FullPatientSerializer(patient)
         return Response(serializers.data)
 
+    def partial_update(self, request, pk=None, *args, **kwargs):
+        if request.data.get('doctor_id', None):
+            patient = get_object_or_404(self.queryset, pk=pk)
+            doctor = get_object_or_404(Doctor.objects.all(), pk=pk)
+            patient.doctors.add(doctor)
+            patient.save()
+            serializer = FullPatientSerializer(patient)
+            return Response(serializer.data)
+        return Response({
+            'error': True,
+            'message': 'doctor_id not found'
+        }, status=status.HTTP_400_BAD_REQUEST)
+
+
+class CurrentPatientsView(views.APIView):
+    permission_classes = (MyTokenPermission,)
+
+    def get(self, request):
+        request.data.update({'doctor_id': 1})
+        if request.data.get('doctor_id', None):
+            patient = Patient.objects.filter(doctors__in=request.user.id)
+            serializer = FullPatientSerializer(patient)
+            return Response(serializer.data)
+        return Response({
+            'error': True,
+            'message': 'doctor_id not found'
+        }, status=status.HTTP_400_BAD_REQUEST)
