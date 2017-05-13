@@ -93,13 +93,9 @@ class PatientRegisterSerializer(serializers.ModelSerializer):
 
     @atomic()
     def create(self, validated_data):
-
-        email = validated_data.get('email')
         password = Patient.objects.make_random_password()
-        fullname = validated_data.get('fullname')
-        birthday = validated_data.get('birthday')
 
-        user = PatientService.register(email, password, validated_data)
+        user = PatientService.register(password, **validated_data)
         return user
 
 

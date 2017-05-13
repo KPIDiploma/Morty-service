@@ -8,9 +8,8 @@ class PatientService:
     # email_service = UserNotifications()
 
     @staticmethod
-    def register(email, password, **extra_fields):
+    def register(password, **extra_fields):
         user = get_user_model().objects.create_user(
-            email=email,
             password=password,
             **extra_fields
         )
