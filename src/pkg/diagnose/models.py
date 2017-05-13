@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils.translation import ugettext as _
 
 from src.pkg.patient.models import Patient
 from src.pkg.patient.models import Doctor
