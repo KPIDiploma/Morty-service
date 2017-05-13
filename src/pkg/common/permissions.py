@@ -28,7 +28,7 @@ class IsAuthorOrReadOnly(permissions.IsAuthenticated):
 
 
 class MyTokenPermission(permissions.AllowAny):
-    def has_object_permission(self, request, view, obj):
+    def has_permission(self, request, view):
         # return True
         doctor_id = None
         token = request.query_params.get('token')
