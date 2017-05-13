@@ -1,4 +1,5 @@
 from django.contrib.auth import get_user_model
+from django.conf import settings
 
 from src.pkg.patient.notifications.service import UserNotifications
 
@@ -13,6 +14,8 @@ class PatientService:
             password=password,
             **extra_fields
         )
-        UserNotifications().send_password_to_user(user=user, password=password)
+        if not settings.DEBUG:
+            UserNotifications().send_password_to_user(user=user,
+                                                      password=password)
 
         return user
