@@ -28,7 +28,7 @@ class IsAuthorOrReadOnly(permissions.IsAuthenticated):
 
 
 class MyTokenPermission(permissions.AllowAny):
-    def has_permission(self, request, view):
+    def has_object_permission(self, request, view, obj):
         # return True
         doctor_id = None
         token = request.query_params.get('token')
@@ -60,5 +60,5 @@ class MyTokenPermission(permissions.AllowAny):
         if delta.seconds > 300:
             return False
         if doctor_id:
-            request.data.update({'doctor_id': doctor_id})
+            request.session['doctor_id'] = doctor_id
         return True

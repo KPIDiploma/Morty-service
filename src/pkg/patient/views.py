@@ -155,10 +155,15 @@ class PatientViewSet(viewsets.ModelViewSet):
         return Response(serializers.data)
 
     def partial_update(self, request, pk=None, *args, **kwargs):
-        if request.data.get('doctor_id', None):
+        doctor_id = request.data.get('id', None)
+        doctor_fullname = request.data.get('fullname', None)
+        if doctor_id and doctor_fullname:
             patient = get_object_or_404(self.queryset, pk=pk)
-            doctor = get_object_or_404(Doctor.objects.all(), pk=pk)
-            patient.doctors.add(doctor)
+            doctor, created = Doctor.objects.get_or_create(pk=doctor_id)
+            if created:
+                doctor.fullname = doctor_fullname
+                doctor.save()
+            patient.doctors.add(doctor.id)
             patient.save()
             serializer = FullPatientSerializer(patient)
             return Response(serializer.data)
@@ -167,15 +172,34 @@ class PatientViewSet(viewsets.ModelViewSet):
             'message': 'doctor_id not found'
         }, status=status.HTTP_400_BAD_REQUEST)
 
+    def update(self, request, *args, **kwargs):
+        return Response({
+            'error': True,
+            'message': 'Not implemented'
+        }, status=status.HTTP_400_BAD_REQUEST)
+
+    def destroy(self, request, *args, **kwargs):
+        return Response({
+            'error': True,
+            'message': 'Not implemented'
+        }, status=status.HTTP_400_BAD_REQUEST)
+
+    def create(self, request, *args, **kwargs):
+        return Response({
+            'error': True,
+            'message': 'Not implemented'
+        }, status=status.HTTP_400_BAD_REQUEST)
+
 
 class CurrentPatientsView(views.APIView):
     permission_classes = (MyTokenPermission,)
 
     def get(self, request):
-        request.data.update({'doctor_id': 1})
-        if request.data.get('doctor_id', None):
-            patient = Patient.objects.filter(doctors__in=request.user.id)
-            serializer = FullPatientSerializer(patient)
+        doctor_id = request.session.get('doctor_id', None)
+        if doctor_id:
+            patients = Patient.objects.filter(
+                doctors__id=doctor_id)
+            serializer = FullPatientSerializer(patients, many=True)
             return Response(serializer.data)
         return Response({
             'error': True,
