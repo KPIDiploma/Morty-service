@@ -1,5 +1,6 @@
 from rest_framework import viewsets
 from rest_framework import status
+from rest_framework import filters
 from rest_framework.response import Response
 
 from django.shortcuts import get_object_or_404
@@ -7,25 +8,29 @@ from django.shortcuts import get_object_or_404
 from src.pkg.diagnose.models import Diagnose
 from src.pkg.diagnose.models import DiagnoseFile
 from src.pkg.diagnose.serializers import (
-    DiagnoseSerializer,
+    DiagnoseForPatientSerializer,
     DiagnosePostSerializer,
     DiagnoseWithFileSerializer,
     FileSerializer
 )
 from src.pkg.common.permissions import MyTokenPermission
-
+from src.pkg.common.pagination import StandardResultsSetPagination
 
 class DiagnoseViewSet(viewsets.ModelViewSet):
     """
     POST
     {
      "text":"Diagnose1",
-     "patient": <patient_id>
+     "patient": <patient_id>,
+     "doctor": "Ai bolit"
     }
     """
     queryset = Diagnose.objects.all()
-    serializer_class = DiagnoseSerializer
+    serializer_class = DiagnoseForPatientSerializer
     permission_classes = (MyTokenPermission,)
+    filter_backends = (filters.SearchFilter,)
+    search_fields = ('fullname',)
+    pagination_class = StandardResultsSetPagination
 
     def retrieve(self, request, pk=None, *args, **kwargs):
         diagnose = get_object_or_404(self.queryset, pk=pk)

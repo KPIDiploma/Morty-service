@@ -20,16 +20,16 @@ class DiagnoseWithFileSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Diagnose
-        fields = ('id', 'text', 'patient', 'files')
+        fields = ('id', 'text', 'patient', 'doctor', 'date', 'files')
 
 
 class DiagnosePostSerializer(serializers.ModelSerializer):
     class Meta:
         model = Diagnose
-        fields = ('id', 'text', 'patient')
+        fields = ('id', 'text', 'patient', 'doctor')
 
 
-class DiagnoseSerializer(serializers.ModelSerializer):
+class DiagnoseForPatientSerializer(serializers.ModelSerializer):
     class Meta:
         model = Diagnose
-        fields = ('id', 'text')
+        fields = ('id', 'text','doctor', 'date')

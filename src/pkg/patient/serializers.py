@@ -10,13 +10,14 @@ from rest_framework import serializers
 
 from src.pkg.patient.models import Patient, Doctor
 from src.pkg.patient.services import PatientService
-from src.pkg.diagnose.serializers import DiagnoseSerializer
+from src.pkg.diagnose.serializers import DiagnoseForPatientSerializer
 
 
 User = get_user_model()
 
 __all__ = [
-    'PatientSerializer', 'FullPatientSerializer', 'PatientDiagnosesSerializer',
+    'PatientSerializer', 'FullPatientSerializer',
+    'PatientCurrentUserSerializer',
     'PatientRegisterSerializer', 'PatientUpdatePasswordSerializer'
 ]
 
@@ -35,7 +36,7 @@ class DoctorSerializer(serializers.ModelSerializer):
 
 class FullPatientSerializer(serializers.ModelSerializer):
     doctors = DoctorSerializer(many=True)
-    diagnoses = DiagnoseSerializer(many=True)
+    diagnoses = DiagnoseForPatientSerializer(many=True)
 
     class Meta:
         model = Patient
@@ -46,8 +47,8 @@ class FullPatientSerializer(serializers.ModelSerializer):
         )
 
 
-class PatientDiagnosesSerializer(serializers.ModelSerializer):
-    diagnoses = DiagnoseSerializer(many=True)
+class PatientCurrentUserSerializer(serializers.ModelSerializer):
+    diagnoses = DiagnoseForPatientSerializer(many=True)
 
     class Meta:
         model = Patient

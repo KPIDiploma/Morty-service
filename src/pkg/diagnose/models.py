@@ -9,6 +9,14 @@ class Diagnose(models.Model):
     text = models.TextField()
     patient = models.ForeignKey(Patient, related_name='diagnoses',
                                 on_delete=models.CASCADE)
+    doctor = models.CharField(
+        verbose_name=_('doctor fullname'),
+        max_length=300,
+    )
+    date = models.DateField(
+        verbose_name=_('date of the birth'),
+        auto_now=True
+    )
 
     def __str__(self):
         return str(self.pk)

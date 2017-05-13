@@ -20,7 +20,7 @@ from django.contrib.auth import login, logout
 from src.pkg.patient.models import Patient
 from src.pkg.common.filters import IsAuthorFilterBackend
 from src.pkg.common.permissions import MyTokenPermission
-from src.pkg.patient.pagination import StandardResultsSetPagination
+from src.pkg.common.pagination import StandardResultsSetPagination
 from src.pkg.patient.serializers import *
 
 
@@ -88,7 +88,7 @@ class CurrentUserDiagnosesView(views.APIView):
 
     def get(self, request):
         patient = Patient.objects.get(pk=request.user.id)
-        serializer = PatientDiagnosesSerializer(patient)
+        serializer = PatientCurrentUserSerializer(patient)
         return Response(serializer.data)
 
 
@@ -97,7 +97,7 @@ class CurrentUserFilesView(views.APIView):
 
     def get(self, request):
         patient = Patient.objects.get(pk=request.user.id)
-        serializer = PatientDiagnosesSerializer(patient)
+        serializer = PatientCurrentUserSerializer(patient)
         return Response(serializer.data)
 
 
