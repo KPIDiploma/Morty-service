@@ -154,13 +154,3 @@ class PatientViewSet(viewsets.ModelViewSet):
         serializers = FullPatientSerializer(patient)
         return Response(serializers.data)
 
-    @detail_route(methods=['post', ])
-    def add_patient(self, request, pk=None, *args, **kwargs):
-        token = request.query_params.get('token')
-
-        doctor = Patient.objects.get(email=request.user.email)
-        data = request.data
-        doctor.patients.add()
-        return Response(
-            # data=BookSerializer(book).data,
-            status=status.HTTP_200_OK)

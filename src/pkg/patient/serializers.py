@@ -99,8 +99,7 @@ class PatientRegisterSerializer(serializers.ModelSerializer):
         fullname = validated_data.get('fullname')
         birthday = validated_data.get('birthday')
 
-        user = PatientService.register(email, password, fullname=fullname,
-                                       birthday=birthday)
+        user = PatientService.register(email, password, validated_data)
         return user
 
 
