@@ -50,7 +50,7 @@ class MyTokenPermission(permissions.AllowAny):
         try:
             time = datetime.strptime(
                 token_timestamp,
-                '%Y-%m-%dT%H:%M:%S'
+                '%Y-%m-%d %H:%M:%S'
             )
         except:
             return False
