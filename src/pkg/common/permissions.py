@@ -43,7 +43,6 @@ class MyTokenPermission(permissions.AllowAny):
             ).decode()
             token_timestamp, doctor_id = token.split('/')
         except ValueError as e:
-            print(e)
             token_timestamp = token
         except:
             return False
