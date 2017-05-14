@@ -1,13 +1,11 @@
 import base64
 from datetime import datetime
-import logging
 
 import rsa
 from rest_framework import permissions
 
 from django.conf import settings
 
-logger = logging.getLogger('file')
 
 class IsCurrentUserOrAdminOnly(permissions.IsAdminUser):
     def has_permission(self, request, view):
@@ -44,11 +42,9 @@ class MyTokenPermission(permissions.AllowAny):
                 rsa.PrivateKey(**settings.SANYA_CLINIC_PRIVATE_KEY)
             ).decode()
             token_timestamp, doctor_id = token.split('/')
-        except ValueError as e:
-            logger.error(e)
+        except ValueError:
             token_timestamp = token
-        except Exception as e:
-            logger.error(e)
+        except:
             return False
 
         try:
@@ -56,13 +52,11 @@ class MyTokenPermission(permissions.AllowAny):
                 token_timestamp,
                 '%Y-%m-%d %H:%M:%S'
             )
-        except Exception as e:
-            logger.error(e)
+        except:
             return False
 
         now_time = datetime.utcnow()
         delta = now_time - time
-        logger.info(delta)
         if delta.seconds > 300:
             return False
         if doctor_id:
