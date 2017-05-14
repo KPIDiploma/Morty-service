@@ -1,3 +1,4 @@
+import base64
 from datetime import datetime
 
 import rsa
@@ -35,6 +36,7 @@ class MyTokenPermission(permissions.AllowAny):
         if not token:
             return False
         try:
+            token = base64.b64decode(token)
             token = rsa.decrypt(
                 token,
                 rsa.PrivateKey(**settings.SANYA_CLINIC_PRIVATE_KEY)
