@@ -49,7 +49,7 @@ class MyTokenPermission(permissions.AllowAny):
             return False
         try:
             time = datetime.strptime(
-                token_timestamp[:19],
+                token_timestamp,
                 '%Y-%m-%dT%H:%M:%S'
             )
         except:
