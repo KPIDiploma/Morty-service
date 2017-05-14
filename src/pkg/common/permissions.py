@@ -36,19 +36,18 @@ class MyTokenPermission(permissions.AllowAny):
         if not token:
             return False
         try:
-            token = base64.b64decode(token)
+            token = base64.urlsafe_b64decode(token)
             token = rsa.decrypt(
                 token,
                 rsa.PrivateKey(**settings.SANYA_CLINIC_PRIVATE_KEY)
             ).decode()
             token_timestamp, doctor_id = token.split('/')
-        except ValueError:
-            try:
-                token_timestamp = token
-            except:
-                return False
+        except ValueError as e:
+            print(e)
+            token_timestamp = token
         except:
             return False
+
         try:
             time = datetime.strptime(
                 token_timestamp,
