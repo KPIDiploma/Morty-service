@@ -33,8 +33,8 @@ class BloodTypeEnum(ChoiceStringEnum):
 
 
 class SexEnum(ChoiceStringEnum):
-    male = 'male'
-    female = 'female'
+    male = 'Male'
+    female = 'Female'
 
 
 class PatientStatus(ChoiceEnum):
