@@ -47,7 +47,7 @@ class MyTokenPermission(permissions.AllowAny):
         except ValueError as e:
             logger.error(e)
             token_timestamp = token
-        except:
+        except Exception as e:
             logger.error(e)
             return False
 
@@ -56,7 +56,7 @@ class MyTokenPermission(permissions.AllowAny):
                 token_timestamp,
                 '%Y-%m-%d %H:%M:%S'
             )
-        except:
+        except Exception as e:
             logger.error(e)
             return False
 
@@ -64,7 +64,6 @@ class MyTokenPermission(permissions.AllowAny):
         delta = now_time - time
         logger.info(delta)
         if delta.seconds > 300:
-            logger.error(e)
             return False
         if doctor_id:
             request.session['doctor_id'] = doctor_id
