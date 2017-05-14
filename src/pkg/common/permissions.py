@@ -1,11 +1,13 @@
 import base64
 from datetime import datetime
+import logging
 
 import rsa
 from rest_framework import permissions
 
 from django.conf import settings
 
+logger = logging.getLogger('file')
 
 class IsCurrentUserOrAdminOnly(permissions.IsAdminUser):
     def has_permission(self, request, view):
@@ -43,8 +45,10 @@ class MyTokenPermission(permissions.AllowAny):
             ).decode()
             token_timestamp, doctor_id = token.split('/')
         except ValueError as e:
+            logger.error(e)
             token_timestamp = token
         except:
+            logger.error(e)
             return False
 
         try:
@@ -53,11 +57,14 @@ class MyTokenPermission(permissions.AllowAny):
                 '%Y-%m-%d %H:%M:%S'
             )
         except:
+            logger.error(e)
             return False
 
         now_time = datetime.utcnow()
         delta = now_time - time
+        logger.info(delta)
         if delta.seconds > 300:
+            logger.error(e)
             return False
         if doctor_id:
             request.session['doctor_id'] = doctor_id
