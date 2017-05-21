@@ -57,7 +57,7 @@ class MyTokenPermission(permissions.AllowAny):
 
         now_time = datetime.utcnow()
         delta = now_time - time
-        if delta.seconds > 300:
+        if delta.seconds > 600:
             return False
         if doctor_id:
             request.session['doctor_id'] = doctor_id

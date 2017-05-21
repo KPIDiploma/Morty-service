@@ -144,15 +144,26 @@ class PatientViewSet(viewsets.ModelViewSet):
 
     # filter_backends = (IsAuthorFilterBackend,)
 
-    def get(self, request, *args, **kwargs):
-        queryset = Patient.get_current_patients(request.user)
-        serializer = PatientSerializer(queryset, many=True)
-        return Response(serializer.data)
-
     def retrieve(self, request, pk=None, *args, **kwargs):
-        patient = get_object_or_404(self.queryset, pk=pk)
-        serializers = FullPatientSerializer(patient)
-        return Response(serializers.data)
+        doctor_id = request.session.get('doctor_id', None)
+        if doctor_id:
+            try:
+                patient = get_object_or_404(self.queryset,
+                                            pk=pk,
+                                            doctors__id=doctor_id)
+                serializers = FullPatientSerializer(patient)
+                return Response(serializers.data)
+
+            except Exception as e:
+                return Response({
+                    'error': True,
+                    'message': str(e)
+                }, status=status.HTTP_400_BAD_REQUEST)
+        else:
+            return Response({
+                'error': True,
+                'message': 'Doctor id not found'
+            }, status=status.HTTP_400_BAD_REQUEST)
 
     def partial_update(self, request, pk=None, *args, **kwargs):
         doctor_id = request.data.get('id', None)
@@ -163,13 +174,17 @@ class PatientViewSet(viewsets.ModelViewSet):
             if created:
                 doctor.fullname = doctor_fullname
                 doctor.save()
+
+            # TODO need to add notification system
+
             patient.doctors.add(doctor.id)
             patient.save()
             serializer = FullPatientSerializer(patient)
             return Response(serializer.data)
+
         return Response({
             'error': True,
-            'message': 'doctor_id not found'
+            'message': 'doctor_id or fullname not found'
         }, status=status.HTTP_400_BAD_REQUEST)
 
     def update(self, request, *args, **kwargs):
