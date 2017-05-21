@@ -116,6 +116,7 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+CONNECT_TOKEN = '?token={token}&doctor={doctor}'
 # Internationalization
 # https://docs.djangoproject.com/en/1.10/topics/i18n/
 

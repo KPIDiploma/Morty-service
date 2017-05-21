@@ -9,6 +9,6 @@ router = DefaultRouter()
 router.register(r'v1/patients', PatientViewSet, 'patient')
 
 urlpatterns = router.urls + [
-    url(r'^v1/current-patients$', CurrentPatientsView.as_view(),
+    url(r'^v1/current-patients/$', CurrentPatientsView.as_view(),
         name='apicurrent-patients')
 ]

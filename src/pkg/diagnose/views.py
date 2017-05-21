@@ -56,3 +56,6 @@ class FileViewSet(viewsets.ModelViewSet):
     queryset = DiagnoseFile.objects.all()
     serializer_class = FileSerializer
     permission_classes = (MyTokenPermission,)
+    filter_backends = (filters.SearchFilter,)
+    search_fields = ('file',)
+    pagination_class = StandardResultsSetPagination

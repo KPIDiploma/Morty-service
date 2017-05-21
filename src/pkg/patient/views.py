@@ -18,10 +18,12 @@ from django.contrib.auth import authenticate
 from django.contrib.auth import login, logout
 
 from src.pkg.patient.models import Patient, Doctor
+from src.pkg.patient.serializers import *
+from src.pkg.patient.services import PatientService
+
 from src.pkg.common.filters import IsAuthorFilterBackend
 from src.pkg.common.permissions import MyTokenPermission
 from src.pkg.common.pagination import StandardResultsSetPagination
-from src.pkg.patient.serializers import *
 
 
 def index(request):
@@ -137,7 +139,7 @@ class UpdatePasswordView(generics.GenericAPIView):
 class PatientViewSet(viewsets.ModelViewSet):
     permission_classes = (MyTokenPermission,)
     queryset = Patient.objects.all()
-    serializer_class = PatientSerializer
+    serializer_class = FullPatientSerializer
     filter_backends = (filters.SearchFilter,)
     search_fields = ('fullname',)
     pagination_class = StandardResultsSetPagination
@@ -148,9 +150,10 @@ class PatientViewSet(viewsets.ModelViewSet):
         doctor_id = request.session.get('doctor_id', None)
         if doctor_id:
             try:
-                patient = get_object_or_404(self.queryset,
-                                            pk=pk,
-                                            doctors__id=doctor_id)
+                patient = get_object_or_404(
+                    self.queryset,
+                    pk=pk,
+                    doctors__id=doctor_id)
                 serializers = FullPatientSerializer(patient)
                 return Response(serializers.data)
 
@@ -175,17 +178,24 @@ class PatientViewSet(viewsets.ModelViewSet):
                 doctor.fullname = doctor_fullname
                 doctor.save()
 
-            # TODO need to add notification system
+            try:
+                PatientService.try_connect_doctor(doctor, patient)
+            except Exception as e:
+                return Response({
+                    'error': True,
+                    'message': str(e)
+                }, status=status.HTTP_400_BAD_REQUEST)
 
-            patient.doctors.add(doctor.id)
-            patient.save()
-            serializer = FullPatientSerializer(patient)
-            return Response(serializer.data)
+            return Response({
+                'error': False,
+                'message': 'Send connection request'
+            }, status=status.HTTP_200_OK)
 
-        return Response({
-            'error': True,
-            'message': 'doctor_id or fullname not found'
-        }, status=status.HTTP_400_BAD_REQUEST)
+        else:
+            return Response({
+                'error': True,
+                'message': 'doctor id or fullname not found'
+            }, status=status.HTTP_400_BAD_REQUEST)
 
     def update(self, request, *args, **kwargs):
         return Response({
@@ -206,8 +216,46 @@ class PatientViewSet(viewsets.ModelViewSet):
         }, status=status.HTTP_400_BAD_REQUEST)
 
 
+@login_required(login_url='/login')
+def connect_doctor_finish(request):
+    token = request.query_params.get('token')
+    doctor_token = request.query_params.get('doctor')
+    if PatientService().final_connect_doctor(
+            request.user,
+            doctor_token,
+            token):
+
+        return render(request, 'patient/doctor_connected.html')
+    else:
+        return render(request, 'patient/error.html')
+
+
+class DoctorConnectFinishView(generics.GenericAPIView):
+    """
+    Use this endpoint to finish doctor connection.
+    """
+    permission_classes = (
+        permissions.IsAuthenticated,
+    )
+
+    def get(self, request, *args, **kwargs):
+        token = request.query_params.get('token')
+        doctor_token = request.query_params.get('doctor')
+        if PatientService().final_connect_doctor(
+                request.user,
+                doctor_token,
+                token
+        ):
+            return render(request, 'patient/doctor_connected.html')
+        else:
+            return render(request, 'patient/error.html')
+
+
 class CurrentPatientsView(views.APIView):
     permission_classes = (MyTokenPermission,)
+    filter_backends = (filters.SearchFilter,)
+    search_fields = ('fullname',)
+    pagination_class = StandardResultsSetPagination
 
     def get(self, request):
         doctor_id = request.session.get('doctor_id', None)

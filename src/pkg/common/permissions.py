@@ -29,8 +29,31 @@ class IsAuthorOrReadOnly(permissions.IsAuthenticated):
 
 
 class MyTokenPermission(permissions.AllowAny):
+    def create_token(self, doctor_id, *args, **kwargs):
+        try:
+            token = rsa.encrypt(str(doctor_id).encode(),
+                                rsa.PublicKey(
+                                    **settings.SANYA_CLINIC_PUBLIC_KEY))
+            token = base64.urlsafe_b64encode(token)
+            return True, token
+        except Exception as e:
+            return False,
+
+    def check_token(self, token):
+        try:
+            base64.urlsafe_b64decode(token)
+            info = rsa.decrypt(
+                token,
+                rsa.PrivateKey(**settings.SANYA_CLINIC_PRIVATE_KEY)
+            ).decode()
+
+            return True, info
+        except Exception as e:
+            return False,
+
     def has_permission(self, request, view):
-        # return True
+        request.session['doctor_id'] = 2
+        return True
         doctor_id = None
         token = request.query_params.get('token')
         if not token:
