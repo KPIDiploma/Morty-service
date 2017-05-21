@@ -217,7 +217,6 @@ class PatientViewSet(viewsets.ModelViewSet):
         }, status=status.HTTP_400_BAD_REQUEST)
 
 
-
 class DoctorConnectFinishView(generics.GenericAPIView):
     """
     Use this endpoint to finish doctor connection.
@@ -230,28 +229,22 @@ class DoctorConnectFinishView(generics.GenericAPIView):
         token = request.query_params.get('token')
         doctor_token = request.query_params.get('doctor')[2:-1]
         connected = PatientService().final_connect_doctor(request.user,
-                                                             doctor_token,
-                                                             token)
+                                                          doctor_token,
+                                                          token)
         if connected:
             return render(request, 'patient/doctor_connected.html')
         else:
             return render(request, 'patient/error.html')
 
 
-class CurrentPatientsView(views.APIView):
+class CurrentPatientsView(generics.ListAPIView):
     permission_classes = (MyTokenPermission,)
     filter_backends = (filters.SearchFilter,)
     search_fields = ('fullname',)
     pagination_class = StandardResultsSetPagination
+    serializer_class = FullPatientSerializer
 
-    def get(self, request):
-        doctor_id = request.session.get('doctor_id', None)
-        if doctor_id:
-            patients = Patient.objects.filter(
-                doctors__id=doctor_id)
-            serializer = FullPatientSerializer(patients, many=True)
-            return Response(serializer.data)
-        return Response({
-            'error': True,
-            'message': 'doctor_id not found'
-        }, status=status.HTTP_400_BAD_REQUEST)
+    def get_queryset(self):
+        return Patient.objects.filter(
+            doctors__id=self.request.session.get('doctor_id', None)
+        )

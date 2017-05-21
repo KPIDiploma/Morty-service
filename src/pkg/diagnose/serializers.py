@@ -30,6 +30,7 @@ class DiagnosePostSerializer(serializers.ModelSerializer):
 
 
 class DiagnoseForPatientSerializer(serializers.ModelSerializer):
+    files = DiagnoseFileSerializer(many=True, required=False)
     class Meta:
         model = Diagnose
-        fields = ('id', 'text','doctor', 'date')
+        fields = ('id', 'text', 'doctor', 'date', 'files')
