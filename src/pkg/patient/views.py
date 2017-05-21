@@ -139,7 +139,7 @@ class UpdatePasswordView(generics.GenericAPIView):
 class PatientViewSet(viewsets.ModelViewSet):
     permission_classes = (MyTokenPermission,)
     queryset = Patient.objects.all()
-    serializer_class = FullPatientSerializer
+    serializer_class = PatientSerializer
     filter_backends = (filters.SearchFilter,)
     search_fields = ('fullname',)
     pagination_class = StandardResultsSetPagination
@@ -179,7 +179,8 @@ class PatientViewSet(viewsets.ModelViewSet):
                 doctor.save()
 
             try:
-                PatientService.try_connect_doctor(doctor, patient)
+                PatientService.connect_patient(patient.id, int(doctor_id))
+                # PatientService.try_connect_doctor(doctor, patient)
             except Exception as e:
                 return Response({
                     'error': True,
@@ -216,18 +217,6 @@ class PatientViewSet(viewsets.ModelViewSet):
         }, status=status.HTTP_400_BAD_REQUEST)
 
 
-@login_required(login_url='/login')
-def connect_doctor_finish(request):
-    token = request.query_params.get('token')
-    doctor_token = request.query_params.get('doctor')
-    connected, _ = PatientService().final_connect_doctor(request.user,
-                                                         doctor_token,
-                                                         token)
-    if connected:
-        return render(request, 'patient/doctor_connected.html')
-    else:
-        return render(request, 'patient/error.html')
-
 
 class DoctorConnectFinishView(generics.GenericAPIView):
     """
@@ -247,17 +236,6 @@ class DoctorConnectFinishView(generics.GenericAPIView):
             return render(request, 'patient/doctor_connected.html')
         else:
             return render(request, 'patient/error.html')
-        #
-        # token = request.query_params.get('token')
-        # doctor_token = request.query_params.get('doctor')
-        # if PatientService().final_connect_doctor(
-        #         request.user,
-        #         doctor_token,
-        #         token
-        # ):
-        #     return render(request, 'patient/doctor_connected.html')
-        # else:
-        #     return render(request, 'patient/error.html')
 
 
 class CurrentPatientsView(views.APIView):

@@ -38,15 +38,18 @@ class PatientService:
                                                    doctor.fullname)
 
     @staticmethod
+    def connect_patient(id, doctor_id):
+        patient = Patient.objects.get(pk=id)
+        patient.doctors.add(int(doctor_id))
+        patient.save()
+
+    @staticmethod
     def final_connect_doctor(user, doctor_token, token):
         if default_token_generator.check_token(user, token):
             checked, doctor_id = MyTokenPermission().check_token(doctor_token)
             if not checked:
                 return False
-
-            patient = Patient.objects.get(pk=user.id)
-            patient.doctors.add(int(doctor_id))
-            patient.save()
+            PatientService.connect_patient(user.id, int(doctor_id))
             return True
         else:
             return False
