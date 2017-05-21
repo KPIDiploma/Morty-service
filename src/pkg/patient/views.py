@@ -160,7 +160,7 @@ class PatientViewSet(viewsets.ModelViewSet):
             except Exception as e:
                 return Response({
                     'error': True,
-                    'message': str(e)
+                    'message': 'msg={}\n DocId={}'.format(str(e), doctor_id)
                 }, status=status.HTTP_400_BAD_REQUEST)
         else:
             return Response({

@@ -54,7 +54,7 @@ class MyTokenPermission(permissions.AllowAny):
 
     def has_permission(self, request, view):
         # request.session['doctor_id'] = 2
-        # return True
+        return True
         doctor_id = None
         token = request.query_params.get('token')
         if not token:
@@ -85,4 +85,6 @@ class MyTokenPermission(permissions.AllowAny):
             return False
         if doctor_id:
             request.session['doctor_id'] = doctor_id
+        else:
+            request.session['doctor_id'] = None
         return True
