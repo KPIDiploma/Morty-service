@@ -220,11 +220,10 @@ class PatientViewSet(viewsets.ModelViewSet):
 def connect_doctor_finish(request):
     token = request.query_params.get('token')
     doctor_token = request.query_params.get('doctor')
-    if PatientService().final_connect_doctor(
-            request.user,
-            doctor_token,
-            token):
-
+    connected, _ = PatientService().final_connect_doctor(request.user,
+                                                         doctor_token,
+                                                         token)
+    if connected:
         return render(request, 'patient/doctor_connected.html')
     else:
         return render(request, 'patient/error.html')
@@ -240,15 +239,25 @@ class DoctorConnectFinishView(generics.GenericAPIView):
 
     def get(self, request, *args, **kwargs):
         token = request.query_params.get('token')
-        doctor_token = request.query_params.get('doctor')
-        if PatientService().final_connect_doctor(
-                request.user,
-                doctor_token,
-                token
-        ):
+        doctor_token = request.query_params.get('doctor')[2:-1]
+        connected = PatientService().final_connect_doctor(request.user,
+                                                             doctor_token,
+                                                             token)
+        if connected:
             return render(request, 'patient/doctor_connected.html')
         else:
             return render(request, 'patient/error.html')
+        #
+        # token = request.query_params.get('token')
+        # doctor_token = request.query_params.get('doctor')
+        # if PatientService().final_connect_doctor(
+        #         request.user,
+        #         doctor_token,
+        #         token
+        # ):
+        #     return render(request, 'patient/doctor_connected.html')
+        # else:
+        #     return render(request, 'patient/error.html')
 
 
 class CurrentPatientsView(views.APIView):

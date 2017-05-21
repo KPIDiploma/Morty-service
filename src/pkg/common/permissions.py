@@ -41,7 +41,8 @@ class MyTokenPermission(permissions.AllowAny):
 
     def check_token(self, token):
         try:
-            base64.urlsafe_b64decode(token)
+
+            token = base64.urlsafe_b64decode(token.encode())
             info = rsa.decrypt(
                 token,
                 rsa.PrivateKey(**settings.SANYA_CLINIC_PRIVATE_KEY)

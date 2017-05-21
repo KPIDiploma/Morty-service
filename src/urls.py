@@ -27,20 +27,23 @@ from src.pkg.patient.views import LogoutView
 from src.pkg.patient.views import CurrentUserView
 from src.pkg.patient.views import CurrentUserDiagnosesView
 from src.pkg.patient.views import CurrentUserFilesView
+from src.pkg.patient.views import DoctorConnectFinishView
 
 
 urlpatterns = [
     url(r'^$', index, name='index'),
-    url(r'^api/v1/auth/login$', LoginView.as_view(), name='apilogin'),
-    url(r'^api/v1/auth/logout$', LogoutView.as_view(),
+    url(r'^api/v1/auth/login/$', LoginView.as_view(), name='apilogin'),
+    url(r'^api/v1/auth/logout/$', LogoutView.as_view(),
         name='apilogout'),
-    url(r'^api/v1/current-user$', CurrentUserView.as_view(),
+    url(r'^api/v1/current-user/$', CurrentUserView.as_view(),
         name='apicurrent-user'),
-    url(r'^api/v1/current-diagnoses$', CurrentUserDiagnosesView.as_view(),
+    url(r'^api/v1/current-diagnoses/$', CurrentUserDiagnosesView.as_view(),
         name='apicurrent-diagnose'),
-    url(r'^api/v1/current-files/(?P<pk>[0-9]+)$',
+    url(r'^api/v1/current-files/(?P<pk>[0-9]+)/$',
         CurrentUserFilesView.as_view(), name='apicurrent-files'),
-    url(r'^profile$', profile, name='profile'),
+    url(r'^profile/$', profile, name='profile'),
+
+    url(r'^connect_doctor/$', DoctorConnectFinishView.as_view(), name='connect-doctor'),
 
     url(r'^admin/', admin.site.urls),
     url(r'^api/', include('src.pkg.patient.urls', namespace='api')),

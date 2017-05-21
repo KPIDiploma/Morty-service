@@ -45,7 +45,8 @@ class PatientService:
                 return False
 
             patient = Patient.objects.get(pk=user.id)
-            patient.doctors.add(doctor_id)
+            patient.doctors.add(int(doctor_id))
             patient.save()
+            return True
         else:
             return False
