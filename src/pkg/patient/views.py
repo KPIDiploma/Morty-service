@@ -139,7 +139,7 @@ class UpdatePasswordView(generics.GenericAPIView):
 class PatientViewSet(viewsets.ModelViewSet):
     permission_classes = (MyTokenPermission,)
     queryset = Patient.objects.all()
-    serializer_class = PatientSerializer
+    serializer_class = FullPatientSerializer
     filter_backends = (filters.SearchFilter,)
     search_fields = ('fullname',)
     pagination_class = StandardResultsSetPagination

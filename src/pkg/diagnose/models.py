@@ -15,7 +15,7 @@ class Diagnose(models.Model):
         max_length=300,
     )
     date = models.DateField(
-        verbose_name=_('date of the birth'),
+        verbose_name=_('date of the diagnose'),
         auto_now=True
     )
 
