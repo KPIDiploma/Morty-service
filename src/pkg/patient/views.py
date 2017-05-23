@@ -245,6 +245,7 @@ class CurrentPatientsView(generics.ListAPIView):
     serializer_class = FullPatientSerializer
 
     def get_queryset(self):
+        print(self.request.session.get('doctor_id', None))
         return Patient.objects.filter(
             doctors__id=self.request.session.get('doctor_id', None)
         )
