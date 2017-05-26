@@ -18,7 +18,7 @@ angular.module('indexApp', ['ngRoute'])
             $http
                 .post('/api/v1/auth/login/', $scope.user)
                 .then(function (data, status, headers, config) {
-                    $window.location = '/diagnose';
+                    $window.location = '/diagnoses';
                 });
         };
 
