@@ -7,39 +7,36 @@
   <link rel="stylesheet" type="text/css"
         href='{% static "common/css/angular-material.min.css" %}'>
 </head>
-<body>
-<div ng-controller="indexController" layout="column" ng-cloak>
-
+<body ng-controller="indexController" layout="column" ng-cloak>
+<div>
   <md-toolbar layout="row">
     <div class="md-toolbar-tools">
-      <md-button href="/profile">Profile</md-button>
+
       <h1 layout-align-gt-sm="center">
         Ambulatoria
       </h1>
+      <md-button href="/profile">Profile</md-button>
     </div>
   </md-toolbar>
   <md-content layout-gt-sm="row" layout-padding>
     <div ng-repeat="diagnose in diagnoses" flex-xs flex-gt-xs="50">
-      <md-card layout-padding>
-        <md-card-header>
-          <!--<md-card-avatar>-->
-          <!--<img src="/media/ic_account_box_black_36px.svg"/>-->
-          <!--</md-card-avatar>-->
-          <md-card-header-text>
-            <span class="md-title">[[diagnose.doctor]]</span>
-          </md-card-header-text>
-        </md-card-header>
+      <md-card layout-padding ng-click="showEditTask($event,diagnose.files)">
+        <div layout="row">
+          <md-icon md-svg-icon='{% static "diagnose/img/icons/ic_account_box_black_48px.svg" %}'></md-icon>
+          <span class="md-title">[[diagnose.doctor]]</span>
+        </div>
+        <div layout="row">
+          <md-icon md-svg-icon='{% static "diagnose/img/icons/ic_date_range_black_48px.svg" %}'></md-icon>
+          <span class="md-title">[[diagnose.date]]</span>
+        </div>
+        <span class="md-headline">Diagnose</span>
+        <p>[[diagnose.text]]</p>
 
-        <span class="md-headline">Card header</span>
-
-        <p>
-          [[diagnose.text]]
-        </p>
 
       </md-card>
     </div>
   </md-content>
-  [[diagnoses]]
+
 </div>
 
 <script src='{% static "common/js/angular.min.js"%}'></script>

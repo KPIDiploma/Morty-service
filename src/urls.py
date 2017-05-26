@@ -18,6 +18,7 @@ from django.conf.urls import include
 from django.conf.urls.static import static
 from django.conf import settings
 from django.contrib import admin
+from django.views.generic import TemplateView
 
 from src.pkg.patient.views import RegistrationView
 from src.pkg.patient.views import profile
@@ -46,13 +47,16 @@ urlpatterns = [
     url(r'^api/v1/current-files/(?P<pk>[0-9]+)/$',
         CurrentUserFilesView.as_view(), name='apicurrent-files'),
 
-
-    url(r'^connect_doctor/$', DoctorConnectFinishView.as_view(), name='connect-doctor'),
+    url(r'^connect_doctor/$', DoctorConnectFinishView.as_view(),
+        name='connect-doctor'),
 
     url(r'^admin/', admin.site.urls),
     url(r'^api/', include('src.pkg.patient.urls', namespace='api')),
     url(r'^api/', include('src.pkg.diagnose.urls', namespace='api')),
     url(r'^api/v1/register/', RegistrationView.as_view()),
+
+    url(r'^diagnoses/files.tmpl.html/$',
+        TemplateView.as_view(template_name='diagnoses/files.tmpl.html')),
 ]
 
 if settings.DEBUG:

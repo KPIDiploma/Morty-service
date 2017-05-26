@@ -7,16 +7,17 @@
   <link rel="stylesheet" type="text/css"
         href='{% static "common/css/angular-material.min.css" %}'>
 </head>
-<body>
-<div ng-controller="profileController" layout="column" ng-cloak>
-  <md-toolbar layout="row">
-    <div class="md-toolbar-tools">
+<body ng-controller="profileController" layout="column" ng-cloak>
+<div>
+  <md-toolbar >
+    <div class="md-toolbar-tools" layout="row">
 
       <h1 layout-align-gt-sm="center">
         Ambulatoria
       </h1>
+
       <div layout-align="end end">
-        <md-button href="/diagnoses">Diagnoses</md-button>
+        <md-button href="/diagnoses">Show Diagnoses</md-button>
       </div>
 
 
