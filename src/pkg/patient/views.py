@@ -28,7 +28,7 @@ from src.pkg.common.pagination import StandardResultsSetPagination
 
 def index(request):
     if request.user.is_authenticated:
-        return redirect('/profile', request)
+        return redirect('/diagnoses', request)
     return render(request, 'patient/index.html')
 
 
@@ -81,25 +81,7 @@ class CurrentUserView(views.APIView):
 
     def get(self, request):
         patient = Patient.objects.get(pk=request.user.id)
-        serializer = FullPatientSerializer(patient)
-        return Response(serializer.data)
-
-
-class CurrentUserDiagnosesView(views.APIView):
-    permission_classes = (permissions.IsAuthenticated,)
-
-    def get(self, request):
-        patient = Patient.objects.get(pk=request.user.id)
-        serializer = PatientCurrentUserSerializer(patient)
-        return Response(serializer.data)
-
-
-class CurrentUserFilesView(views.APIView):
-    permission_classes = (permissions.IsAuthenticated,)
-
-    def get(self, request):
-        patient = Patient.objects.get(pk=request.user.id)
-        serializer = PatientCurrentUserSerializer(patient)
+        serializer = PatientHalfSerializer(patient)
         return Response(serializer.data)
 
 

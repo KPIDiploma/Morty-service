@@ -1,20 +1,25 @@
-from rest_framework import viewsets
-from rest_framework import status
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import get_object_or_404
+from django.shortcuts import render
 from rest_framework import filters
+from rest_framework import permissions
+from rest_framework import status
+from rest_framework import views
+from rest_framework import viewsets
 from rest_framework.response import Response
 
-from django.shortcuts import get_object_or_404
-
+from src.pkg.common.pagination import StandardResultsSetPagination
+from src.pkg.common.permissions import MyTokenPermission
 from src.pkg.diagnose.models import Diagnose
 from src.pkg.diagnose.models import DiagnoseFile
-from src.pkg.diagnose.serializers import (
-    DiagnoseForPatientSerializer,
-    DiagnosePostSerializer,
-    DiagnoseWithFileSerializer,
-    FileSerializer
-)
-from src.pkg.common.permissions import MyTokenPermission
-from src.pkg.common.pagination import StandardResultsSetPagination
+from src.pkg.diagnose.serializers import *
+from src.pkg.patient.models import Patient
+
+
+__all__ = [
+    'PatientSerializer', 'FullPatientSerializer',
+    'PatientRegisterSerializer', 'PatientUpdatePasswordSerializer'
+]
 
 
 class DiagnoseViewSet(viewsets.ModelViewSet):
@@ -59,3 +64,26 @@ class FileViewSet(viewsets.ModelViewSet):
     filter_backends = (filters.SearchFilter,)
     search_fields = ('file',)
     pagination_class = StandardResultsSetPagination
+
+
+class CurrentUserDiagnosesView(views.APIView):
+    permission_classes = (permissions.IsAuthenticated,)
+
+    def get(self, request):
+        patient = Patient.objects.get(pk=request.user.id)
+        serializer = PatientCurrentUserSerializer(patient)
+        return Response(serializer.data)
+
+
+class CurrentUserFilesView(views.APIView):
+    permission_classes = (permissions.IsAuthenticated,)
+
+    def get(self, request):
+        patient = Patient.objects.get(pk=request.user.id)
+        serializer = PatientCurrentUserSerializer(patient)
+        return Response(serializer.data)
+
+
+@login_required(login_url='/login')
+def diagnoses(request):
+    return render(request, 'diagnoses/index.html')

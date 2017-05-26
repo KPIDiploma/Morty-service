@@ -25,13 +25,17 @@ from src.pkg.patient.views import index
 from src.pkg.patient.views import LoginView
 from src.pkg.patient.views import LogoutView
 from src.pkg.patient.views import CurrentUserView
-from src.pkg.patient.views import CurrentUserDiagnosesView
-from src.pkg.patient.views import CurrentUserFilesView
 from src.pkg.patient.views import DoctorConnectFinishView
+
+from src.pkg.diagnose.views import CurrentUserDiagnosesView
+from src.pkg.diagnose.views import CurrentUserFilesView
+from src.pkg.diagnose.views import diagnoses
 
 
 urlpatterns = [
     url(r'^$', index, name='index'),
+    url(r'^profile/$', profile, name='profile'),
+    url(r'^diagnoses/$', diagnoses, name='profile'),
     url(r'^api/v1/auth/login/$', LoginView.as_view(), name='apilogin'),
     url(r'^api/v1/auth/logout/$', LogoutView.as_view(),
         name='apilogout'),
@@ -41,7 +45,7 @@ urlpatterns = [
         name='apicurrent-diagnose'),
     url(r'^api/v1/current-files/(?P<pk>[0-9]+)/$',
         CurrentUserFilesView.as_view(), name='apicurrent-files'),
-    url(r'^profile/$', profile, name='profile'),
+
 
     url(r'^connect_doctor/$', DoctorConnectFinishView.as_view(), name='connect-doctor'),
 

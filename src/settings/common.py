@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     'django_filters',
     'src.pkg.patient',
     'src.pkg.diagnose',
+    'src.pkg.common',
 
 ]
 

@@ -3,40 +3,91 @@
 <head>
   <meta charset="UTF-8">
   <title>Title</title>
-  <!--<link rel="stylesheet" type="text/css"-->
-  <!--href='{% static "patient/css/profile.css" %}'>-->
-  <!--<link rel="stylesheet" type="text/css"-->
-  <!--href='{% static "patient/css/diagnoses.css" %}'>-->
-  <!--<link rel="stylesheet" type="text/css"-->
-        <!--href='common.css'>-->
-  <!--<link rel="stylesheet" type="text/css"-->
-        <!--href='diagnoses.css'>-->
-  <!--<link rel="stylesheet" type="text/css"-->
-        <!--href='profile.css'>-->
-  <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/angular_material/0.11.2/angular-material.min.css">
-  <!--<link rel="stylesheet"-->
-        <!--href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">-->
+  <link rel="stylesheet" href="angular-material.min.css">
+
 </head>
-<body >
-<div ng-controller="profileController" ng-cloak class="row">
-   <section layout="row" layout-sm="column" layout-align="center center" layout-wrap>
-      <md-button class="md-raised">Button</md-button>
-      <md-button class="md-raised md-primary">Primary</md-button>
-      <md-button ng-disabled="true" class="md-raised md-primary">Disabled</md-button>
-      <md-button class="md-raised md-warn">Warn</md-button>
-      <div class="label">Raised</div>
-    </section>
+<body>
+<div ng-controller="profileController" layout="column" ng-cloak>
+  <md-toolbar layout="row">
+    <div class="md-toolbar-tools">
+
+      <md-button href="/diagnoses">Back</md-button>
+      <h1 layout-align-gt-sm="center">
+        Ambulatoria
+      </h1>
+    </div>
+  </md-toolbar>
+  <md-card>
+    <md-content md-theme="docs-dark" layout-gt-sm="row" layout-padding>
+      <div layout-gt-sm="row">
+        <md-input-container>
+          <label>Fullname</label>
+          <input ng-model="profile.fullname">
+        </md-input-container>
+        <md-input-container>
+          <label>Email</label>
+          <input ng-model="profile.email" type="email">
+        </md-input-container>
+      </div>
+    </md-content>
+
+    <md-content layout-padding>
+      <div>
+        <form name="userForm">
+          <div>
+            <md-input-container>
+
+              <label>Birthday</label>
+              <md-datepicker ng-model="profile.birthday"></md-datepicker>
+            </md-input-container>
+          </div>
+
+          <md-input-container class="md-block">
+            <label>Address</label>
+            <input ng-model="profile.address">
+          </md-input-container>
+
+          <div layout-gt-sm="row">
+            <md-input-container class="md-block" flex-gt-sm>
+              <label>Mobile Phone</label>
+              <input input name="postalCode" ng-model="profile.mobile" placeholder="+380930000000"
+                     required ng-pattern="/^\+[0-9]{12}$/" md-maxlength="13">
+            </md-input-container>
+
+            <md-input-container class="md-block" flex-gt-sm>
+              <label>Sex</label>
+              <md-select ng-model="user.state">
+                <md-option ng-repeat="sex in sexs" value="[[sex.abbrev]]">
+                  [[profile.sex]]
+                </md-option>
+              </md-select>
+            </md-input-container>
+
+            <md-input-container class="md-block" flex-gt-sm>
+              <label>Blood Type</label>
+              <md-select ng-model="user.state">
+                <md-option ng-repeat="blood in bloods" value="[[blood.abbrev]]">
+                  [[profile.blood_type]]
+                </md-option>
+              </md-select>
+            </md-input-container>
+          </div>
+          <section layout="row" layout-align="center center" layout-wrap>
+            <md-button type="submit" class="md-raised md-primary">Save</md-button>
+          </section>
+        </form>
+      </div>
+    </md-content>
+  </md-card>
+
 </div>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
-<!-- AngularJS Material Dependencies -->
-<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular-animate.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular-aria.js"></script>
+<script src="angular.min.js"></script>
 
-<!-- AngularJS Material Javascript using GitCDN to load directly from `bower-material/master` -->
-<script src="https://gitcdn.link/repo/angular/bower-material/master/angular-material.js"></script>
+<script src="angular-material.min.js"></script>
+<script src="angular-aria.min.js"></script>
+<script src="angular-animate.min.js"></script>
+<script src="angular-messages.min.js"></script>
 
 <script src='profile.js'></script>
 </body>

@@ -17,8 +17,8 @@ User = get_user_model()
 
 __all__ = [
     'PatientSerializer', 'FullPatientSerializer',
-    'PatientCurrentUserSerializer',
-    'PatientRegisterSerializer', 'PatientUpdatePasswordSerializer'
+    'PatientRegisterSerializer', 'PatientHalfSerializer',
+    'PatientUpdatePasswordSerializer'
 ]
 
 
@@ -26,6 +26,14 @@ class PatientSerializer(serializers.ModelSerializer):
     class Meta:
         model = Patient
         fields = ('id', 'fullname')
+
+
+class PatientHalfSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Patient
+        fields = ('id', 'fullname', 'email', 'birthday',
+                  'address', 'mobile', 'sex', 'blood_type',
+                  )
 
 
 class DoctorSerializer(serializers.ModelSerializer):
@@ -44,16 +52,6 @@ class FullPatientSerializer(serializers.ModelSerializer):
             'id', 'email', 'fullname', 'birthday', 'address',
             'mobile', 'sex', 'blood_type', 'doctors', 'status',
             'diagnoses'
-        )
-
-
-class PatientCurrentUserSerializer(serializers.ModelSerializer):
-    diagnoses = DiagnoseForPatientSerializer(many=True)
-
-    class Meta:
-        model = Patient
-        fields = (
-            'diagnoses',
         )
 
 

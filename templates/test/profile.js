@@ -1,19 +1,43 @@
 /**
  * Created by Kryvonis on 3/23/17.
  */
-angular.module('profileApp', ['ngMaterial'])
-    .config(
-        ['$interpolateProvider', '$httpProvider', function ($interpolateProvider, $httpProvider) {
+var app = angular.module('profileApp', ['ngMaterial', 'ngMessages']);
+app.config(
+    ['$interpolateProvider', '$httpProvider', '$mdThemingProvider',
+        function ($interpolateProvider, $httpProvider, $mdThemingProvider) {
+            $mdThemingProvider.theme('docs-dark', 'default')
+                .primaryPalette('blue')
+                .dark();
             $interpolateProvider.startSymbol('[[');
             $interpolateProvider.endSymbol(']]');
             $httpProvider.defaults.xsrfCookieName = 'csrftoken';
             $httpProvider.defaults.xsrfHeaderName = 'X-CSRFToken';
         }]
-    )
+);
 
+app.controller('profileController', function ($scope) {
+    $scope.profile = {
+        id: 1,
+        fullname: "Artem Kryvonis",
+        email: "kryvonis.artem@gmail.com",
+        birthday: null,
+        address: null,
+        mobile: null,
+        sex: null,
+        blood_type: null
+    };
 
-    .controller('profileController', function ($scope) {
-        $scope.profilePage = function () {
+    $scope.sexs = [{"abbrev": "Male"}, {"abbrev": "Female"}];
+    $scope.bloods = [
+        {abbrev: '0+'}, {abbrev: "0-"},
+        {abbrev: "A+"}, {abbrev: "A-"},
+        {abbrev: "B+"}, {abbrev: "B-"},
+        {abbrev: "AB+"}, {abbrev: "AB-"}
+    ];
+    $scope.toggleSidenav = function (menuId) {
+        $mdSidenav(menuId).toggle();
+    };
+    $scope.profilePage = function () {
 //            $http
 //                .get('api/v1/current-user')
 //                .success(function (data, status, headers, config) {
@@ -23,54 +47,13 @@ angular.module('profileApp', ['ngMaterial'])
 //            });
 
 
-            $scope.profileActive = 'active';
-            $scope.diagnosesActive = '';
-            $scope.diagnoseRowShow = false
-        };
-
-        $scope.diagnosesPage = function () {
-            $http
-                .get('api/v1/current-diagnoses')
-                .success(function (data, status, headers, config) {
-                    $scope.diagnoses = data.diagnoses;
-                }).error(function (data, status, header, config) {
-
-            });
-
-            $scope.profileActive = '';
-            $scope.diagnoseRowShow = false;
-            $scope.diagnosesActive = 'active'
-        };
-
-        $scope.diagnoseRow = function (id) {
-            angular.forEach($scope.diagnoses, function (value, key) {
-                if (value['id'] == id) {
-                    $scope.diagnose = value;
-                }
-            });
-            $scope.profileActive = '';
-            $scope.diagnosesActive = '';
-            $scope.diagnoseRowShow = true;
-        };
-
-        $scope.logout = function () {
-            $http
-                .post('api/v1/auth/logout')
-                .success(function (data, status, headers, config) {
-                    delete $window.sessionStorage.token;
-                    $window.location = '/';
-                }).error(function (data, status, header, config) {
-                delete $window.sessionStorage.token;
-                $window.location = '/';
-            });
-        };
-
-        $scope.setBlood = function (type) {
-            $scope.profile.blood_type = type;
-        };
-
         $scope.profileActive = 'active';
-        $scope.profilePage();
+        $scope.diagnosesActive = '';
+        $scope.diagnoseRowShow = false
+    };
+
+    // $scope.profileActive = 'active';
+    // $scope.profilePage();
 
 
-    });
+});

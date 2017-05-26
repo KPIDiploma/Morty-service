@@ -2,22 +2,22 @@
 {% load i18n static %}
 <html lang="en" ng-app="indexApp">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-    <link rel="stylesheet" type="text/css"
-          href='{% static "patient/css/index.css" %}'>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <link rel="stylesheet" type="text/css"
+        href='{% static "patient/css/index.css" %}'>
 </head>
 <body ng-controller="indexController">
 <div class="login-page">
-    <div class="form">
-        <form class="login-form" ng-submit="login()">
-            <input type="text" placeholder="email" ng-model="user.email"/>
-            <input type="password" placeholder="password"
-                   ng-model="user.password"/>
-            <button>login</button>
-            <p>[[result]]</p>
-        </form>
-    </div>
+  <div class="form">
+    <form class="login-form" ng-submit="login()">
+      <input type="text" placeholder="email" ng-model="user.email"/>
+      <input type="password" placeholder="password"
+             ng-model="user.password"/>
+      <button>login</button>
+      <p>[[result]]</p>
+    </form>
+  </div>
 </div>
 
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
