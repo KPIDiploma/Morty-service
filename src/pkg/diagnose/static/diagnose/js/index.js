@@ -12,7 +12,7 @@ app.config(
 );
 
 
-app.controller('indexController', function ($scope, $location, $http, $mdDialog) {
+app.controller('indexController', function ($scope, $location, $http, $window, $mdDialog) {
 
     $scope.diagnosesLoad = function () {
         $http
@@ -24,6 +24,14 @@ app.controller('indexController', function ($scope, $location, $http, $mdDialog)
 
         });
     };
+
+    $scope.logout = function () {
+            $http
+                .post('/api/v1/auth/logout/')
+                .then(function (data) {
+                    $window.location = '/';
+                });
+        };
 
     $scope.showEditTask = function (ev, files) {
         $scope.files = files;

@@ -16,9 +16,9 @@ angular.module('indexApp', ['ngRoute'])
 
         $scope.login = function () {
             $http
-                .post('api/v1/auth/login', $scope.user)
+                .post('/api/v1/auth/login/', $scope.user)
                 .success(function (data, status, headers, config) {
-                    $window.location = '/profile';
+                    $window.location = '/diagnose';
                 }).error(function (data, status, header, config) {
                     $scope.result = 'email or password not correct';
             });
