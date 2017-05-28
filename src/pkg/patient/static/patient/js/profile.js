@@ -17,16 +17,16 @@ app.config(
 );
 
 app.controller('profileController', function ($scope, $location, $http) {
-    $scope.profile = {
-        id: 1,
-        fullname: "Artem Kryvonis",
-        email: "kryvonis.artem@gmail.com",
-        birthday: null,
-        address: null,
-        mobile: null,
-        sex: null,
-        blood_type: null
-    };
+    // $scope.profile = {
+    //     id: 1,
+    //     fullname: "Artem Kryvonis",
+    //     email: "kryvonis.artem@gmail.com",
+    //     birthday: null,
+    //     address: null,
+    //     mobile: null,
+    //     sex: null,
+    //     blood_type: null
+    // };
 
     $scope.sexs = [{"abbrev": "Male"}, {"abbrev": "Female"}];
     $scope.bloods = [
@@ -41,6 +41,15 @@ app.controller('profileController', function ($scope, $location, $http) {
             .get('/api/v1/current-user')
             .then(function (data) {
                 $scope.profile = data.data;
+                $scope.profile.birthday = new Date(data.data.birthday)
+            });
+    };
+    $scope.profileSave = function () {
+        $http
+            .get('/api/v1/current-user')
+            .then(function (data) {
+                $scope.profile = data.data;
+                $scope.profile.birthday = new Date(data.data.birthday)
             });
     };
 

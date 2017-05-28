@@ -1,7 +1,11 @@
 from django.contrib.auth.tokens import default_token_generator
 
-from src.pkg.patient.notifications.messages import PasswordNotification, \
-    DoctorConnectionNotification
+from src.pkg.patient.notifications.messages import (
+    PasswordNotification,
+    DoctorConnectionNotification,
+    UpdateDiagnoseNotification,
+    NewDiagnoseNotification
+)
 from src.pkg.common.notifications.base import EmailNotification
 from src.pkg.patient.utils import encode_uid
 
@@ -46,4 +50,12 @@ class UserNotifications(EmailNotification):
     def send_doctor_connection(self, user, link, doctor_fullname):
         message = DoctorConnectionNotification(link=link,
                                                doctor_fullname=doctor_fullname)
+        self.service.send_to_user(message, user.email)
+
+    def send_new_diagnose(self, user, link):
+        message = NewDiagnoseNotification(link=link)
+        self.service.send_to_user(message, user.email)
+
+    def send_updated_diagnose(self, user, link):
+        message = UpdateDiagnoseNotification(link=link)
         self.service.send_to_user(message, user.email)

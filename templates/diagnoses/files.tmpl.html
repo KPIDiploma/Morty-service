@@ -2,15 +2,16 @@
 <div style="width:60%;">
   <md-dialog aria-label="Files"
              ng-cloak>
-      <md-dialog-content layout-margin>
-        <div ng-repeat="file in files" flex-xs flex-gt-xs="50">
-          <div layout="row">
-            <h2>Files:</h2>
-            <md-button class="md-raised md-primary" href="[[file.file]]">
-              Click to view
-            </md-button>
-          </div>
+    <md-dialog-content layout-margin>
+      <h2>Files:</h2>
+      <div ng-repeat="file in files" flex-xs flex-gt-xs="50">
+        <div layout="row">
+
+          <md-button class="md-raised md-primary" href="[[file.file]]">
+            Click to view
+          </md-button>
         </div>
-      </md-dialog-content>
+      </div>
+    </md-dialog-content>
   </md-dialog>
 </div>
